@@ -1,0 +1,158 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #111;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+.contenedor-principal {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+#contenedor-mapa {
+  flex: 1.3;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #ffffff;
+}
+
+#mapa-svg {
+  width: 95%;
+  height: 90%;
+}
+
+.comuna-poligono {
+  stroke: #ffffff;
+  stroke-width: 1.5;
+  cursor: pointer;
+  transition: opacity 0.15s ease, stroke-width 0.15s ease;
+}
+
+.comuna-poligono:hover {
+  opacity: 0.82;
+  stroke: #ffffff;
+  stroke-width: 3;
+}
+
+.tooltip-flotante {
+  position: absolute;
+  display: none;
+  background: rgba(30, 30, 30, 0.9);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  pointer-events: none;
+  z-index: 100;
+  white-space: nowrap;
+}
+
+.panel-info {
+  flex: 0.9;
+  padding: 50px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 1px solid #f0f0f0;
+  background: #ffffff;
+}
+
+.encabezado h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #c94059;
+  line-height: 1.25;
+}
+
+.encabezado h1 span {
+  color: #111111;
+}
+
+.subtitulo {
+  font-size: 13px;
+  color: #888;
+  margin-top: 8px;
+  font-family: monospace;
+}
+
+.tarjeta-datos {
+  margin: 30px 0;
+  padding: 24px;
+  background-color: #fcfbfb;
+  border: 1px solid #f0e6e6;
+  border-radius: 8px;
+  min-height: 220px;
+}
+
+.tarjeta-datos h2 {
+  font-size: 22px;
+  color: #c94059;
+  margin-bottom: 14px;
+}
+
+.tarjeta-datos p {
+  font-size: 15px;
+  margin: 8px 0;
+  color: #444;
+}
+
+.btn-accion {
+  margin-top: 15px;
+  padding: 8px 20px;
+  border: 1.5px solid #c94059;
+  background: transparent;
+  color: #c94059;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.leyenda h3 {
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.leyenda ul {
+  list-style: none;
+}
+
+.leyenda li {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.color-box {
+  width: 18px;
+  height: 18px;
+  margin-right: 12px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.c-muy-alta { background-color: #2b0b3f; }
+.c-alta     { background-color: #671556; }
+.c-media    { background-color: #9d255d; }
+.c-baja     { background-color: #d15664; }
+.c-muy-baja { background-color: #eb8f7f; }
+
+.pie-pagina small {
+  font-family: monospace;
+  color: #aaa;
+}

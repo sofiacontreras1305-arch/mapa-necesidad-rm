@@ -1,5 +1,8 @@
-
 const datosComunas = {};
+const establecimientosPorComuna = {};
+let comunaSeleccionada = null;
+let enModoZoom = false;
+
 function normalizar(texto) {
   if (!texto) return "";
   return texto.toString().toLowerCase()
@@ -62,7 +65,6 @@ const mapaComunasSantiago = [
   { nombre: "Padre Hurtado", puntos: "45,480 85,485 70,545 30,530" }
 ];
 
-
 function renderizarMapaSVG() {
   const svg = document.getElementById("mapa-svg");
   const tooltip = document.getElementById("tooltip");
@@ -77,24 +79,28 @@ function renderizarMapaSVG() {
     polygon.setAttribute("points", c.puntos);
     polygon.setAttribute("fill", color);
     polygon.setAttribute("class", "comuna-poligono");
+    polygon.setAttribute("data-nombre", c.nombre);
 
     polygon.addEventListener("mouseenter", (e) => {
+      if (enModoZoom) return;
       tooltip.innerText = c.nombre;
       tooltip.style.display = "block";
-      mostrarDatosComuna(c.nombre);
     });
 
     polygon.addEventListener("mousemove", (e) => {
+      if (enModoZoom) return;
       const rect = document.getElementById("contenedor-mapa").getBoundingClientRect();
       tooltip.style.left = (e.clientX - rect.left + 15) + "px";
       tooltip.style.top = (e.clientY - rect.top - 15) + "px";
     });
 
     polygon.addEventListener("mouseleave", () => {
+      if (enModoZoom) return;
       tooltip.style.display = "none";
     });
 
     polygon.addEventListener("click", () => {
+      if (enModoZoom) return;
       mostrarDatosComuna(c.nombre);
     });
 
@@ -103,6 +109,7 @@ function renderizarMapaSVG() {
 }
 
 function mostrarDatosComuna(nombre) {
+  comunaSeleccionada = nombre;
   document.getElementById("comuna-nombre").innerText = `Comuna: ${nombre}`;
   const info = datosComunas[normalizar(nombre)];
   const panel = document.getElementById("comuna-detalles");
@@ -121,9 +128,115 @@ function mostrarDatosComuna(nombre) {
     document.getElementById("val-prioritarios").innerText = "-";
   }
   panel.style.display = "block";
+
+  const btnOriginal = document.querySelector('.btn-accion');
+  if (btnOriginal) btnOriginal.innerText = "Ver establecimientos";
 }
 
-Papa.parse("datos.csv", {
+// botón zoom
+document.querySelector('.btn-accion').addEventListener('click', function() {
+  const svg = document.getElementById("mapa-svg");
+
+  if (this.innerText === "Volver al mapa") {
+    svg.setAttribute("viewBox", "0 0 850 750"); 
+    document.querySelectorAll('.colegio-punto').forEach(p => p.remove());
+    this.innerText = "Ver establecimientos";
+
+    enModoZoom = false;
+    return;
+  }
+
+  if (!comunaSeleccionada) return;
+
+  const poligonos = document.querySelectorAll('.comuna-poligono');
+  let poligonoObjetivo = null;
+
+  poligonos.forEach(p => {
+    if (p.getAttribute('data-nombre') === comunaSeleccionada) {
+      poligonoObjetivo = p;
+    }
+  });
+
+  if (poligonoObjetivo) {
+    const bbox = poligonoObjetivo.getBBox();
+    const margen = 15; 
+    
+    const nuevoViewBox = `${bbox.x - margen} ${bbox.y - margen} ${bbox.width + margen * 2} ${bbox.height + margen * 2}`;
+    svg.setAttribute("viewBox", nuevoViewBox);
+
+    dibujarColegios(comunaSeleccionada, bbox);
+
+    this.innerText = "Volver al mapa";
+
+    enModoZoom = true;
+  }
+});
+
+function dibujarColegios(nombreComuna, bbox) {
+  const svg = document.getElementById("mapa-svg");
+  document.querySelectorAll('.colegio-punto').forEach(p => p.remove());
+
+  const comunaNorm = normalizar(nombreComuna);
+  const colegios = establecimientosPorComuna[comunaNorm] || [];
+
+  if (colegios.length === 0) {
+    console.warn(`No se encontraron establecimientos en base_web.csv para: ${nombreComuna}`);
+    return;
+  }
+
+  const radioFijo = 2.5; 
+  const tooltip = document.getElementById("tooltip");
+  
+  colegios.forEach(colegio => {
+    const cx = bbox.x + (bbox.width * 0.15) + (Math.random() * bbox.width * 0.7);
+    const cy = bbox.y + (bbox.height * 0.15) + (Math.random() * bbox.height * 0.7);
+
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("cx", cx);
+    circle.setAttribute("cy", cy);
+    circle.setAttribute("r", radioFijo);
+    circle.setAttribute("class", "colegio-punto");
+
+    circle.addEventListener("mouseenter", (e) => {
+      tooltip.innerHTML = `
+        <span style="color:#d84b65; font-size:14px;">${colegio['Nombre Establecimiento']}</span><br>
+        <span title="Promedio nacional: 256,7" style="cursor: help; border-bottom: 1px dotted #ccc;">SIMCE: ${colegio['Promedio SIMCE'] || '-'}</span><br>
+        IVE: ${colegio['IVE'] || '-'}<br>
+        Alumnos por docente: ${colegio['Alumnos por docente'] || '-'}
+      `;
+      tooltip.style.display = "block";
+    });
+
+    circle.addEventListener("mousemove", (e) => {
+      const rect = document.getElementById("contenedor-mapa").getBoundingClientRect();
+      tooltip.style.left = (e.clientX - rect.left + 15) + "px";
+      tooltip.style.top = (e.clientY - rect.top - 15) + "px";
+    });
+
+    circle.addEventListener("mouseleave", () => {
+      tooltip.style.display = "none";
+      tooltip.innerHTML = ""; 
+    });
+
+    svg.appendChild(circle);
+  });
+}
+
+document.getElementById("contenedor-mapa").addEventListener("click", (e) => {
+  if (e.target.tagName === "svg" || e.target.id === "contenedor-mapa") {
+    document.getElementById("mapa-svg").setAttribute("viewBox", "0 0 850 750"); 
+    document.querySelectorAll('.colegio-punto').forEach(p => p.remove());
+
+    const btnOriginal = document.querySelector('.btn-accion');
+    if (btnOriginal) {
+      btnOriginal.innerText = "Ver establecimientos";
+    }
+    enModoZoom = false;
+  }
+});
+
+//datos de las comunas//
+Papa.parse("datos_comunas.csv", {
   download: true,
   header: false,
   skipEmptyLines: true,
@@ -167,4 +280,28 @@ Papa.parse("datos.csv", {
     console.error("Error al leer datos.csv:", err);
     renderizarMapaSVG();
   }
+});
+
+// datos de los colegios
+Papa.parse("datos_colegios.csv", {
+  download: true,
+  header: true,
+  skipEmptyLines: true,
+  transformHeader: function(header) {
+    return header.trim(); 
+  },
+  complete: function(resultado) {
+    const filas = resultado.data;
+    
+    filas.forEach(fila => {
+      if (fila.Comuna && fila.Comuna.trim() !== "") {
+        const comunaNorm = normalizar(fila.Comuna);
+        
+        if (!establecimientosPorComuna[comunaNorm]) {
+          establecimientosPorComuna[comunaNorm] = [];
+        }
+        establecimientosPorComuna[comunaNorm].push(fila);
+      }
+    });
+  },
 });

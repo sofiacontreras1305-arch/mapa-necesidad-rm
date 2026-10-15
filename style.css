@@ -30,6 +30,7 @@ body {
 #mapa-svg {
   width: 95%;
   height: 90%;
+  transition: all 0.7s ease-in-out;
 }
 
 .comuna-poligono {
@@ -43,6 +44,20 @@ body {
   opacity: 0.82;
   stroke: #ffffff;
   stroke-width: 3;
+}
+
+.colegio-punto {
+  fill: #c94059;
+  stroke: #ffffff;
+  stroke-width: 0.5;
+  opacity: 0.85;
+  transition: r 0.3s ease, opacity 0.3s ease;
+}
+
+.colegio-punto-hover {
+  r: 5;
+  opacity: 1;
+  cursor: pointer;
 }
 
 .tooltip-flotante {

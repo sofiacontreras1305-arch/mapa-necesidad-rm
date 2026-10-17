@@ -1,106 +1,96 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
- <meta charset="utf-8" />
- <title>Mapa de Calor: Indicador de Necesidad RM</title>
- <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8" />
+  <title>Mapa de Calor: Indicador de Necesidad RM</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
+  <!-- CONTENEDOR DE DIAPOSITIVAS -->
+  <div class="slides-container" id="slidesContainer">
 
- <!-- CONTENEDOR DE DIAPOSITIVAS -->
- <div class="slides-container" id="slidesContainer">
+    <!-- Página 1 -->
+    <section class="slide">
+      <div class="slide-content">
+        <h1>La desigualdad invisible en la Región Metropolitana</h1>
+        <p>El territorio metropolitano no es homogéneo. Al analizar las comunas de Santiago, las brechas socioeconómicas y educativas marcan profundas diferencias territoriales que impactan directamente en las oportunidades de aprendizaje de los estudiantes.</p>
+      </div>
+      <button class="btn-flecha" onclick="siguienteSlide()">Siguiente <span>↓</span></button>
+    </section>
 
+    <!-- Página 2 -->
+    <section class="slide">
+      <div class="slide-content">
+        <h2>Alta vulnerabilidad en la periferia</h2>
+        <p>Las comunas de la periferia y el sector sur concentran los índices de necesidad más elevados, albergando una gran proporción de alumnos prioritarios y establecimientos educacionales con alta criticidad.</p>
+      </div>
+      <button class="btn-flecha" onclick="siguienteSlide()">Siguiente <span>↓</span></button>
+    </section>
 
-   <!-- Página 1 -->
-   <section class="slide">
-     <div class="slide-content">
-       <h1>La desigualdad invisible en la Región Metropolitana</h1>
-       <p>El territorio metropolitano no es homogéneo. Al analizar las comunas de Santiago, las brechas socioeconómicas y educativas marcan profundas diferencias territoriales que impactan directamente en las oportunidades de aprendizaje de los estudiantes.</p>
-     </div>
-     <button class="btn-flecha" onclick="siguienteSlide()">Siguiente <span>↓</span></button>
-   </section>
+    <!-- Página 3 -->
+    <section class="slide">
+      <div class="slide-content">
+        <h2>El contraste con el sector oriente</h2>
+        <p>En contraparte, las comunas del sector nororiente muestran indicadores de necesidad muy bajos y puntajes SIMCE muy por encima del promedio nacional, evidenciando la profunda segregación espacial de la educación.</p>
+      </div>
+      <button class="btn-flecha" onclick="siguienteSlide()">Explorar el Mapa <span>↓</span></button>
+    </section>
 
+    <!-- Página 4: Mapa Interactivo (Aparece al final) -->
+    <section class="slide slide-mapa">
+      <div class="encabezado-mapa">
+        <h2>Mapa de calor: <span>indicador de necesidad por comuna de la RM</span></h2>
+      </div>
 
-   <!-- Página 2 -->
-   <section class="slide">
-     <div class="slide-content">
-       <h2>Alta vulnerabilidad en la periferia</h2>
-       <p>Las comunas de la periferia y el sector sur concentran los índices de necesidad más elevados, albergando una gran proporción de alumnos prioritarios y establecimientos educacionales con alta criticidad.</p>
-     </div>
-     <button class="btn-flecha" onclick="siguienteSlide()">Siguiente <span>↓</span></button>
-   </section>
+      <div class="contenedor-principal-mapa">
+        <div id="contenedor-mapa">
+          <div id="tooltip" class="tooltip-flotante"></div>
+          <svg id="mapa-svg" viewBox="0 0 800 563" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
 
+        <div class="panel-info">
+          <section id="tarjeta-datos" class="tarjeta-datos">
+            <h2 id="comuna-nombre">Pasa el cursor sobre una comuna</h2>
+            <div id="comuna-detalles" style="display: none;">
+              <p><strong>Índice de Necesidad:</strong> <span id="val-indice">-</span> / 100</p>
+              <p><strong>Total Colegios:</strong> <span id="val-colegios">-</span></p>
+              <p><strong>% Colegios SEP Críticos:</strong> <span id="val-criticos">-</span></p>
+              <p><strong>SIMCE Mat. 4° Básico:</strong> <span id="val-simce" title="Promedio nacional referencial: 256,7 (máx 500 pts.)" style="cursor: help; border-bottom: 1px dotted #888;">-</span> pts</p>
+              <p><strong>Alumnos Prioritarios:</strong> <span id="val-prioritarios">-</span></p>
+              <button class="btn-accion">Ver establecimientos</button>
+            </div>
+          </section>
 
-   <!-- Página 3 -->
-   <section class="slide">
-     <div class="slide-content">
-       <h2>El contraste con el sector oriente</h2>
-       <p>En contraparte, las comunas del sector nororiente muestran indicadores de necesidad muy bajos y puntajes SIMCE muy por encima del promedio nacional, evidenciando la profunda segregación espacial de la educación.</p>
-     </div>
-     <button class="btn-flecha" onclick="siguienteSlide()">Explorar el Mapa <span>↓</span></button>
-   </section>
+          <section class="leyenda">
+            <h3>Índice de Necesidad</h3>
+            <div class="barra-leyenda-container">
+              <div class="barra-colores">
+                <div class="segmento c-muy-baja" title="Muy baja (< 35)"></div>
+                <div class="segmento c-baja" title="Baja (35 - 46)"></div>
+                <div class="segmento c-media" title="Media (46 - 52)"></div>
+                <div class="segmento c-alta" title="Alta (52 - 58)"></div>
+                <div class="segmento c-muy-alta" title="Muy alta (> 58)"></div>
+              </div>
+              <div class="numeros-leyenda">
+                <span>&lt;35</span>
+                <span>35</span>
+                <span>46</span>
+                <span>52</span>
+                <span>58</span>
+                <span>&gt;58</span>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
 
+      <button class="btn-volver-arriba" onclick="primerSlide()">↑ Volver al inicio</button>
+    </section>
 
-   <!-- Página 4: Mapa Interactivo (Aparece al final) -->
-   <section class="slide slide-mapa">
-     <div class="encabezado-mapa">
-       <h2>Mapa de calor: <span>indicador de necesidad por comuna de la RM</span></h2>
-     </div>
+  </div>
 
-
-     <div class="contenedor-principal-mapa">
-       <div id="contenedor-mapa">
-         <div id="tooltip" class="tooltip-flotante"></div>
-         <svg id="mapa-svg" viewBox="0 0 800 563" preserveAspectRatio="xMidYMid meet"></svg>
-       </div>
-
-
-       <div class="panel-info">
-         <section id="tarjeta-datos" class="tarjeta-datos">
-           <h2 id="comuna-nombre">Pasa el cursor sobre una comuna</h2>
-           <div id="comuna-detalles" style="display: none;">
-             <p><strong>Índice de Necesidad:</strong> <span id="val-indice">-</span> / 100</p>
-             <p><strong>Total Colegios:</strong> <span id="val-colegios">-</span></p>
-             <p><strong>% Colegios SEP Críticos:</strong> <span id="val-criticos">-</span></p>
-             <p><strong>SIMCE:</strong> <span id="val-simce" title="Promedio nacional referencial: 256,7 (máx 500 pts.)" style="cursor: help; border-bottom: 1px dotted #888;">-</span> pts</p>
-             <p><strong>Alumnos Prioritarios:</strong> <span id="val-prioritarios">-</span></p>
-             <button class="btn-accion">Ver establecimientos</button>
-           </div>
-         </section>
-
-
-         <section class="leyenda">
-           <h3>Índice de Necesidad</h3>
-           <div class="barra-leyenda-container">
-             <div class="barra-colores">
-               <div class="segmento c-muy-baja" title="Muy baja (< 35)"></div>
-               <div class="segmento c-baja" title="Baja (35 - 46)"></div>
-               <div class="segmento c-media" title="Media (46 - 52)"></div>
-               <div class="segmento c-alta" title="Alta (52 - 58)"></div>
-               <div class="segmento c-muy-alta" title="Muy alta (> 58)"></div>
-             </div>
-             <div class="numeros-leyenda">
-               <span>&lt;35</span>
-               <span>35</span>
-               <span>46</span>
-               <span>52</span>
-               <span>58</span>
-               <span>&gt;58</span>
-             </div>
-           </div>
-         </section>
-
-
-     <button class="btn-volver-arriba" onclick="primerSlide()">↑ Volver al inicio</button>
-   </section>
-
-
- </div>
-
-
- <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
- <script src="script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
-

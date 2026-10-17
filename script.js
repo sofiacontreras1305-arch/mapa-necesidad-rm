@@ -273,7 +273,6 @@ function mostrarDatosComuna(nombre) {
   const btn = document.querySelector(".btn-accion");
   if (btn) btn.innerText = "Ver establecimientos";
 }
-
 // ─── Botón "Ver establecimientos" / "Volver al mapa" ─────────────────────────
 const VIEW_BOX_INICIAL = "0 0 800 563"; // coincide con comunas.svg
 
@@ -290,7 +289,6 @@ document.querySelector(".btn-accion").addEventListener("click", function () {
   }
 
   if (!comunaSeleccionada) return;
-
   // Buscar el path de la comuna seleccionada
   const poligonos = document.querySelectorAll(".comuna-poligono");
   let poligonoObjetivo = null;
@@ -452,5 +450,42 @@ Papa.parse("datos_colegios.csv", {
         establecimientosPorComuna[key].push(fila);
       }
     });
+  }
+});
+// ─── Control de Navegación por Clic (Diapositivas) ──────────────────────────
+let slideActual = 0;
+const totalSlides = 4; // 3 de texto + 1 del mapa final
+
+function siguienteSlide() {
+  if (slideActual < totalSlides - 1) {
+    slideActual++;
+    actualizarPosicionSlides();
+  }
+}
+
+function primerSlide() {
+  slideActual = 0;
+  actualizarPosicionSlides();
+}
+
+function actualizarPosicionSlides() {
+  const container = document.getElementById('slidesContainer');
+  if (container) {
+    container.style.transform = `translateY(-${slideActual * 100}vh)`;
+  }
+}
+
+// Opcional: Permitir avanzar o retroceder con las teclas de flecha del teclado
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+    if (slideActual < totalSlides - 1) {
+      slideActual++;
+      actualizarPosicionSlides();
+    }
+  } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+    if (slideActual > 0) {
+      slideActual--;
+      actualizarPosicionSlides();
+    }
   }
 });

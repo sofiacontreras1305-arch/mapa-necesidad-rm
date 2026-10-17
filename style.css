@@ -4,17 +4,129 @@
   padding: 0;
 }
 
-body {
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* Desactiva el scroll manual con el dedo/mouse */
   font-family: 'Helvetica Neue', Arial, sans-serif;
   color: #111;
   background-color: #ffffff;
-  overflow: hidden;
 }
 
-.contenedor-principal {
-  display: flex;
-  height: 100vh;
+.slides-container {
   width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.slide {
+  width: 100vw;
+  height: 100vh;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 20px;
+  position: relative;
+  background-color: #ffffff;
+}
+
+.slide-content {
+  max-width: 750px;
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.slide h1, .slide h2 {
+  font-size: 32px;
+  color: #c94059;
+  margin-bottom: 20px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.slide p {
+  font-size: 18px;
+  color: #444;
+  line-height: 1.7;
+}
+
+/* Botón de flecha */
+.btn-flecha {
+  padding: 12px 28px;
+  border: 2px solid #c94059;
+  background: #c94059;
+  color: #fff;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(201, 64, 89, 0.2);
+}
+
+.btn-flecha:hover {
+  background: #b0354d;
+  transform: translateY(-2px);
+}
+
+.btn-flecha span {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.btn-volver-arriba {
+  position: absolute;
+  bottom: 20px;
+  right: 40px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid #ccc;
+  color: #666;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.btn-volver-arriba:hover {
+  background: #f0f0f0;
+}
+
+/* ── Diapositiva Final con el Mapa ── */
+.slide-mapa {
+  background-color: #fcfbfb;
+  justify-content: flex-start;
+  padding-top: 30px;
+}
+
+.encabezado-mapa {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.encabezado-mapa h2 {
+  font-size: 24px;
+}
+
+.encabezado-mapa h2 span {
+  color: #111111;
+}
+
+.contenedor-principal-mapa {
+  display: flex;
+  width: 90%;
+  max-width: 1150px;
+  height: 72vh;
+  background: #ffffff;
+  border: 1px solid #f0e6e6;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  overflow: hidden;
 }
 
 #contenedor-mapa {
@@ -33,6 +145,18 @@ body {
   transition: all 0.7s ease-in-out;
 }
 
+.panel-info {
+  flex: 0.9;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 1px solid #f0f0f0;
+  background: #ffffff;
+  overflow-y: auto;
+}
+
+/* Elementos internos del mapa y leyendas */
 .comuna-poligono {
   stroke: #ffffff;
   stroke-width: 1.5;
@@ -54,12 +178,6 @@ body {
   transition: r 0.3s ease, opacity 0.3s ease;
 }
 
-.colegio-punto-hover {
-  r: 5;
-  opacity: 1;
-  cursor: pointer;
-}
-
 .tooltip-flotante {
   position: absolute;
   display: none;
@@ -74,71 +192,42 @@ body {
   white-space: nowrap;
 }
 
-.panel-info {
-  flex: 0.9;
-  padding: 50px 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-left: 1px solid #f0f0f0;
-  background: #ffffff;
-}
-
-.encabezado h1 {
-  font-size: 28px;
-  font-weight: 800;
-  color: #c94059;
-  line-height: 1.25;
-}
-
-.encabezado h1 span {
-  color: #111111;
-}
-
-.subtitulo {
-  font-size: 13px;
-  color: #888;
-  margin-top: 8px;
-  font-family: monospace;
-}
-
 .tarjeta-datos {
-  margin: 30px 0;
-  padding: 24px;
+  margin-bottom: 15px;
+  padding: 18px;
   background-color: #fcfbfb;
   border: 1px solid #f0e6e6;
   border-radius: 8px;
-  min-height: 220px;
 }
 
 .tarjeta-datos h2 {
-  font-size: 22px;
+  font-size: 18px;
   color: #c94059;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .tarjeta-datos p {
-  font-size: 15px;
-  margin: 8px 0;
+  font-size: 14px;
+  margin: 6px 0;
   color: #444;
 }
 
 .btn-accion {
-  margin-top: 15px;
-  padding: 8px 20px;
+  margin-top: 10px;
+  padding: 6px 16px;
   border: 1.5px solid #c94059;
   background: transparent;
   color: #c94059;
   border-radius: 20px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
 }
 
 .leyenda h3 {
-  font-size: 15px;
+  font-size: 13px;
   color: #333;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .leyenda ul {
@@ -148,15 +237,15 @@ body {
 .leyenda li {
   display: flex;
   align-items: center;
-  font-size: 14px;
-  margin-bottom: 8px;
+  font-size: 13px;
+  margin-bottom: 5px;
   color: #555;
 }
 
 .color-box {
-  width: 18px;
-  height: 18px;
-  margin-right: 12px;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
   border-radius: 2px;
   display: inline-block;
 }
@@ -166,8 +255,47 @@ body {
 .c-media    { background-color: #9d255d; }
 .c-baja     { background-color: #d15664; }
 .c-muy-baja { background-color: #eb8f7f; }
-
-.pie-pagina small {
-  font-family: monospace;
-  color: #aaa;
+/* ── Estilos de la Leyenda en Barra ── */
+.leyenda {
+  margin-top: 15px;
 }
+
+.leyenda h3 {
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.barra-leyenda-container {
+  width: 100%;
+}
+
+.barra-colores {
+  display: flex;
+  height: 12px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.15);
+}
+
+.barra-colores .segmento {
+  flex: 1;
+  height: 100%;
+}
+
+.numeros-leyenda {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #555;
+  margin-top: 5px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Colores de los segmentos de la barra */
+.c-muy-baja { background-color: #eb8f7f; }
+.c-baja     { background-color: #d15664; }
+.c-media    { background-color: #9d255d; }
+.c-alta     { background-color: #671556; }
+.c-muy-alta { background-color: #2b0b3f; }

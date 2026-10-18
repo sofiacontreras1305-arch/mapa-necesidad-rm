@@ -36,14 +36,14 @@ const REFERENCIAS_COMUNAS = [
   { nombre: "Lampa",               cx: 456.85, cy:  81.43 },
   { nombre: "Colina",              cx: 541.84, cy: 155.93 },
   { nombre: "Quilicura",           cx: 345.24, cy: 146.58 },
-  { nombre: "San Jose de Maipo",   cx: 671.15, cy: 321.22 },
+  { nombre: "San José de Maipo",   cx: 671.15, cy: 321.22 },
   { nombre: "Melipilla",           cx: 112.12, cy: 418.61 },
   { nombre: "Padre Hurtado",       cx: 295.37, cy: 452.51 },
 
   // Zona poniente lejana
   { nombre: "Pudahuel",            cx: 209.61, cy: 234.61 },
-  { nombre: "Maipu",               cx: 214.90, cy: 336.93 },
-  { nombre: "Penaflor",            cx: 316.32, cy: 342.54 },
+  { nombre: "Maipú",               cx: 214.90, cy: 336.93 },
+  { nombre: "Peñaflor",            cx: 316.32, cy: 342.54 },
   { nombre: "El Monte",            cx: 286.41, cy: 305.02 },
   { nombre: "Talagante",           cx: 342.36, cy: 309.94 },
   { nombre: "Calera de Tango",     cx: 345.99, cy: 281.55 },
@@ -60,7 +60,7 @@ const REFERENCIAS_COMUNAS = [
   { nombre: "Vitacura",            cx: 464.31, cy: 189.24 },
   { nombre: "Las Condes",          cx: 487.44, cy: 216.21 },
   { nombre: "La Reina",            cx: 474.53, cy: 276.09 },
-  { nombre: "Penalolen",           cx: 445.16, cy: 185.11 },
+  { nombre: "Peñalolén",           cx: 445.16, cy: 185.11 },
   { nombre: "La Florida",          cx: 477.82, cy: 253.17 },
 
   // Comunas del centro norte
@@ -72,30 +72,30 @@ const REFERENCIAS_COMUNAS = [
   { nombre: "Recoleta",            cx: 405.45, cy: 284.99 },
   { nombre: "Independencia",       cx: 413.08, cy: 240.74 },
   { nombre: "Providencia",         cx: 439.54, cy: 200.72 },
-  { nombre: "Nunoa",               cx: 440.0,  cy: 218.0  },
+  { nombre: "Ñuñoa",               cx: 440.0,  cy: 218.0  },
   { nombre: "Macul",               cx: 459.94, cy: 221.52 },
 
   // Comunas del centro
   { nombre: "Santiago",            cx: 420.43, cy: 208.90 },
-  { nombre: "Estacion Central",    cx: 397.64, cy: 178.07 },
+  { nombre: "Estación Central",    cx: 397.64, cy: 178.07 },
   { nombre: "Cerrillos",           cx: 433.67, cy: 217.67 },
   { nombre: "San Miguel",          cx: 448.12, cy: 237.60 },
-  { nombre: "San Joaquin",         cx: 438.52, cy: 238.15 },
+  { nombre: "San Joaquín",         cx: 438.52, cy: 238.15 },
   { nombre: "La Cisterna",         cx: 430.41, cy: 250.61 },
   { nombre: "La Granja",           cx: 442.16, cy: 251.90 },
   { nombre: "Lo Espejo",           cx: 423.11, cy: 245.72 },
   { nombre: "Pedro Aguirre Cerda", cx: 427.26, cy: 236.26 },
   { nombre: "El Bosque",           cx: 373.18, cy: 288.28 },
-  { nombre: "San Ramon",           cx: 428.32, cy: 265.18 },
+  { nombre: "San Ramón",           cx: 428.32, cy: 265.18 },
 
   // Sur oriente
   { nombre: "Pirque",              cx: 445.60, cy: 270.93 },
   { nombre: "Puente Alto",         cx: 484.39, cy: 234.16 },
 
   // Comunas rurales poniente
-  { nombre: "Curacavi",            cx:  95.0,  cy: 310.0  },
-  { nombre: "Maria Pinto",         cx: 130.0,  cy: 370.0  },
-  { nombre: "Alhue",               cx:  80.0,  cy: 460.0  },
+  { nombre: "Curacaví",            cx:  95.0,  cy: 310.0  },
+  { nombre: "María Pinto",         cx: 130.0,  cy: 370.0  },
+  { nombre: "Alhué",               cx:  80.0,  cy: 460.0  },
   { nombre: "San Pedro",           cx: 240.0,  cy: 410.0  },
 ];
 
@@ -176,6 +176,9 @@ function renderizarMapaSVG(svgExterno) {
     const nombreComuna = ri !== undefined ? refs[ri].nombreOriginal : null;
     const nombreNorm   = nombreComuna ? normalizar(nombreComuna) : null;
 
+    // Ignorar polígonos residuales sin comuna real asociada
+    if (!nombreComuna) return;
+
     // Buscar datos en el CSV (búsqueda directa + parcial)
     let info = null;
     if (nombreNorm) {
@@ -198,16 +201,15 @@ function renderizarMapaSVG(svgExterno) {
     nuevoPath.setAttribute("fill",       color);
     nuevoPath.setAttribute("class",      "comuna-poligono");
     // data-nombre para compatibilidad con la función de zoom
-    if (nombreComuna) {
-      nuevoPath.setAttribute("data-nombre", nombreComuna);
-      nuevoPath.setAttribute("data-comuna", nombreComuna);
-    }
+    nuevoPath.setAttribute("data-nombre", nombreComuna);
+    nuevoPath.setAttribute("data-comuna", nombreComuna);
     nuevoPath.setAttribute("data-idx", pi);
 
     // ── Eventos ──
     nuevoPath.addEventListener("mouseenter", () => {
       if (enModoZoom) return;
-      const nombre = nuevoPath.getAttribute("data-nombre") || `Sector ${pi}`;
+      const nombre = nuevoPath.getAttribute("data-nombre");
+      if (!nombre) return;
       tooltip.innerText      = nombre;
       tooltip.style.display  = "block";
     });
@@ -226,8 +228,18 @@ function renderizarMapaSVG(svgExterno) {
 
     nuevoPath.addEventListener("click", () => {
       if (enModoZoom) return;
-      const nombre = nuevoPath.getAttribute("data-nombre") || `Sector ${pi}`;
+      const nombre = nuevoPath.getAttribute("data-nombre");
+      if (!nombre) return;
       mostrarDatosComuna(nombre);
+    });
+
+    nuevoPath.addEventListener("dblclick", () => {
+      if (enModoZoom) return;
+      const nombre = nuevoPath.getAttribute("data-nombre");
+      if (nombre) {
+        mostrarDatosComuna(nombre);
+        activarModoEstablecimientos(nombre);
+      }
     });
 
     contenedorSVG.appendChild(nuevoPath);
@@ -254,85 +266,570 @@ function mostrarDatosComuna(nombre) {
   const panel = document.getElementById("comuna-detalles");
 
   if (info) {
-    document.getElementById("val-indice").innerText       = info.indice !== null ? info.indice : "-";
-    document.getElementById("val-colegios").innerText     = info.colegios || "-";
-    document.getElementById("val-criticos").innerText     = info.criticos || "-";
-    document.getElementById("val-simce").innerText        = info.simce !== null ? info.simce : "-";
-    document.getElementById("val-prioritarios").innerText = info.prioritarios
-      ? Number(info.prioritarios).toLocaleString("es-CL") : "-";
-  } else {
-    document.getElementById("val-indice").innerText       = "Sin registro";
-    document.getElementById("val-colegios").innerText     = "-";
-    document.getElementById("val-criticos").innerText     = "-";
-    document.getElementById("val-simce").innerText        = "-";
-    document.getElementById("val-prioritarios").innerText = "-";
-  }
-  panel.style.display = "block";
+    const elIndice = document.getElementById("val-indice");
+    if (elIndice) elIndice.innerText = info.indice !== null ? info.indice : "-";
 
-  // Asegurarse de que el botón vuelva a su estado original al cambiar de comuna
-  const btn = document.querySelector(".btn-accion");
-  if (btn) btn.innerText = "Ver establecimientos";
+    const colegiosMapeados = (establecimientosPorComuna[normNombre] || []).length;
+    const elColegios = document.getElementById("val-colegios");
+    if (elColegios) {
+      if (info.colegios && info.colegios !== "-") {
+        elColegios.innerHTML = `<strong>${colegiosMapeados}</strong> <span style="font-size:12.5px; color:#666; font-weight:normal;">(de ${info.colegios} registrados en la comuna)</span>`;
+      } else {
+        elColegios.innerText = colegiosMapeados > 0 ? colegiosMapeados : "-";
+      }
+    }
+
+    const elCriticos = document.getElementById("val-criticos");
+    if (elCriticos) elCriticos.innerText = info.criticos || "-";
+
+    const elSimce = document.getElementById("val-simce");
+    if (elSimce) elSimce.innerText = info.simce !== null ? info.simce : "-";
+
+    const elPrioritarios = document.getElementById("val-prioritarios");
+    if (elPrioritarios) elPrioritarios.innerText = info.prioritarios || "-";
+  } else {
+    const elIndice = document.getElementById("val-indice");
+    if (elIndice) elIndice.innerText = "Sin registro";
+    const elColegios = document.getElementById("val-colegios");
+    if (elColegios) elColegios.innerText = "-";
+    const elCriticos = document.getElementById("val-criticos");
+    if (elCriticos) elCriticos.innerText = "-";
+    const elSimce = document.getElementById("val-simce");
+    if (elSimce) elSimce.innerText = "-";
+    const elPrioritarios = document.getElementById("val-prioritarios");
+    if (elPrioritarios) elPrioritarios.innerText = "-";
+  }
+  if (panel) panel.style.display = "block";
+
+  // Si estamos en modo zoom al cambiar de comuna, resetear la vista
+  if (enModoZoom) {
+    resetearZoom();
+  }
+}
+
+// ─── Variables de Navegación y Zoom ──────────────────────────────────────────
+const VIEW_BOX_INICIAL = "0 0 800 563";
+let animacionViewBoxId = null;
+let colegiosComunaActual = [];
+
+// ─── Animación suave del ViewBox SVG (Cubic-Bezier / 60fps) ───────────────────
+function parseViewBox(vbString) {
+  if (!vbString) return [0, 0, 800, 563];
+  return vbString.trim().split(/\s+/).map(Number);
+}
+
+function animarViewBox(svgEl, targetVB, duracion = 650, callback) {
+  if (animacionViewBoxId) {
+    cancelAnimationFrame(animacionViewBoxId);
+    animacionViewBoxId = null;
+  }
+
+  const currentAttr = svgEl.getAttribute("viewBox") || VIEW_BOX_INICIAL;
+  const startVB = parseViewBox(currentAttr);
+  const startTime = performance.now();
+
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  function frame(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duracion, 1);
+    const t = easeInOutCubic(progress);
+
+    const curX = startVB[0] + (targetVB[0] - startVB[0]) * t;
+    const curY = startVB[1] + (targetVB[1] - startVB[1]) * t;
+    const curW = startVB[2] + (targetVB[2] - startVB[2]) * t;
+    const curH = startVB[3] + (targetVB[3] - startVB[3]) * t;
+
+    svgEl.setAttribute("viewBox", `${curX} ${curY} ${curW} ${curH}`);
+
+    if (progress < 1) {
+      animacionViewBoxId = requestAnimationFrame(frame);
+    } else {
+      animacionViewBoxId = null;
+      if (callback) callback();
+    }
+  }
+
+  animacionViewBoxId = requestAnimationFrame(frame);
 }
 
 // ─── Resetear Zoom y volver a vista panorámica ────────────────────────────────
 function resetearZoom() {
   const svg = document.getElementById("mapa-svg");
-  svg.setAttribute("viewBox", VIEW_BOX_INICIAL);
+  const tooltip = document.getElementById("tooltip");
+  if (tooltip) {
+    tooltip.style.display = "none";
+    tooltip.innerHTML = "";
+  }
+
+  animarViewBox(svg, parseViewBox(VIEW_BOX_INICIAL), 600, () => {
+    document.querySelectorAll(".colegio-punto").forEach(p => p.remove());
+  });
+
   svg.classList.remove("modo-zoom");
 
   document.querySelectorAll(".comuna-poligono").forEach(p => {
     p.classList.remove("comuna-activa");
   });
 
-  document.querySelectorAll(".colegio-punto").forEach(p => p.remove());
+  // Transición suave entre paneles (regresar a vista general de comuna)
+  const vistaComuna = document.getElementById("vista-comuna");
+  const vistaEst = document.getElementById("vista-establecimientos");
+  const vistaCorreo = document.getElementById("vista-correo");
 
-  const btn = document.querySelector(".btn-accion");
-  if (btn) btn.innerText = "Ver establecimientos";
+  if (vistaEst) vistaEst.classList.remove("activa");
+  if (vistaCorreo) vistaCorreo.classList.remove("activa");
+
+  setTimeout(() => {
+    if (vistaEst) vistaEst.style.display = "none";
+    if (vistaCorreo) vistaCorreo.style.display = "none";
+    if (vistaComuna) {
+      vistaComuna.style.display = "flex";
+      setTimeout(() => vistaComuna.classList.add("activa"), 20);
+    }
+  }, 180);
 
   enModoZoom = false;
 }
 
-// ─── Botón "Ver establecimientos" / "Volver al mapa" ─────────────────────────
-const VIEW_BOX_INICIAL = "0 0 800 563"; // coincide con comunas.svg
-
-document.querySelector(".btn-accion").addEventListener("click", function () {
+// ─── Opción 1: Ampliación adaptativa real de la comuna ───────────────────────
+function activarModoEstablecimientos(nombreComuna) {
   const svg = document.getElementById("mapa-svg");
-
-  // Modo volver al mapa panorámico
-  if (this.innerText === "Volver al mapa") {
-    resetearZoom();
-    return;
-  }
-
-  if (!comunaSeleccionada) return;
+  if (!nombreComuna) return;
 
   // Buscar el path de la comuna seleccionada
   const poligonos = document.querySelectorAll(".comuna-poligono");
   let poligonoObjetivo = null;
   poligonos.forEach(p => {
-    if (p.getAttribute("data-nombre") === comunaSeleccionada) {
+    if (p.getAttribute("data-nombre") === nombreComuna) {
       poligonoObjetivo = p;
     }
   });
 
-  if (poligonoObjetivo) {
-    const bbox   = poligonoObjetivo.getBBox();
-    const margen = 15;
+  if (!poligonoObjetivo) return;
 
-    // Activar modo zoom y destacar exclusivamente la comuna activa
-    svg.classList.add("modo-zoom");
-    poligonos.forEach(p => p.classList.remove("comuna-activa"));
-    poligonoObjetivo.classList.add("comuna-activa");
+  const bbox = poligonoObjetivo.getBBox();
+  const svgRect = svg.getBoundingClientRect();
+  const containerAR = (svgRect.width && svgRect.height)
+    ? (svgRect.width / svgRect.height)
+    : (800 / 563);
 
-    svg.setAttribute("viewBox",
-      `${bbox.x - margen} ${bbox.y - margen} ${bbox.width + margen * 2} ${bbox.height + margen * 2}`
-    );
+  // Padding proporcional dinámico (14% de la mayor dimensión para elegancia y respiración visual)
+  const mayorDimension = Math.max(bbox.width, bbox.height);
+  const padX = Math.max(bbox.width * 0.14, mayorDimension * 0.10, 2.0);
+  const padY = Math.max(bbox.height * 0.14, mayorDimension * 0.10, 2.0);
 
-    dibujarColegios(comunaSeleccionada, bbox, poligonoObjetivo);
-    this.innerText = "Volver al mapa";
-    enModoZoom = true;
+  let targetW = bbox.width + padX * 2;
+  let targetH = bbox.height + padY * 2;
+
+  // Compensar relación de aspecto del contenedor para centrar y expandir
+  if (targetW / targetH < containerAR) {
+    targetW = targetH * containerAR;
+  } else {
+    targetH = targetW / containerAR;
   }
-});
+
+  const cx = bbox.x + bbox.width * 0.5;
+  const cy = bbox.y + bbox.height * 0.5;
+  const targetX = cx - targetW * 0.5;
+  const targetY = cy - targetH * 0.5;
+  const targetVB = [targetX, targetY, targetW, targetH];
+
+  // Activar estilos de zoom en el SVG
+  svg.classList.add("modo-zoom");
+  poligonos.forEach(p => p.classList.remove("comuna-activa"));
+  poligonoObjetivo.classList.add("comuna-activa");
+
+  // Iniciar animación cinematográfica del zoom
+  animarViewBox(svg, targetVB, 650);
+
+  // Radio adaptativo proporcional a píxeles reales en pantalla (~5.2px)
+  const svgPixelWidth = svgRect.width || 600;
+  const svgRadius = Math.max(0.08, 5.2 * (targetW / svgPixelWidth));
+
+  // Renderizar establecimientos en el mapa
+  dibujarColegios(nombreComuna, bbox, poligonoObjetivo, svgRadius);
+
+  // Opción 2: Mostrar panel interactivo de establecimientos con buscador y lista
+  mostrarPanelEstablecimientos(nombreComuna);
+
+  enModoZoom = true;
+}
+
+// ─── Opción 2: Panel Lateral Interactivo y Sincronizado ───────────────────────
+function mostrarPanelEstablecimientos(nombreComuna) {
+  const vistaComuna = document.getElementById("vista-comuna");
+  const vistaEst = document.getElementById("vista-establecimientos");
+  const tituloEst = document.getElementById("est-comuna-nombre");
+  const badgeTotal = document.getElementById("est-badge-total");
+  const listaContenedor = document.getElementById("lista-colegios");
+  const buscador = document.getElementById("buscador-colegios");
+  const btnLimpiar = document.getElementById("btn-limpiar-busqueda");
+  const contadorFiltrados = document.getElementById("contador-filtrados");
+  const sinColegiosMsg = document.getElementById("sin-colegios-msg");
+
+  const colegios = establecimientosPorComuna[normalizar(nombreComuna)] || [];
+  colegiosComunaActual = colegios;
+
+  tituloEst.innerText = nombreComuna;
+  badgeTotal.innerText = `${colegios.length} ${colegios.length === 1 ? 'colegio' : 'colegios'}`;
+  contadorFiltrados.innerText = `Mostrando ${colegios.length} establecimientos`;
+
+  // Limpiar buscador
+  if (buscador) buscador.value = "";
+  if (btnLimpiar) btnLimpiar.style.display = "none";
+  if (sinColegiosMsg) sinColegiosMsg.style.display = "none";
+
+  // Generar lista de colegios
+  listaContenedor.innerHTML = "";
+  if (colegios.length === 0) {
+    if (sinColegiosMsg) {
+      sinColegiosMsg.style.display = "block";
+      sinColegiosMsg.innerText = "No se encontraron establecimientos registrados para esta comuna.";
+    }
+  } else {
+    colegios.forEach((colegio, idx) => {
+      const card = document.createElement("div");
+      card.className = "item-colegio";
+      card.setAttribute("data-idx", idx);
+      if (colegio.RBD) card.setAttribute("data-rbd", colegio.RBD);
+
+      const simce = colegio["Promedio SIMCE"] || "-";
+      const ive = colegio["IVE"] || "-";
+      const alumDoc = colegio["Alumnos por docente"] || "-";
+      const indColegio = limpiarNumero(colegio["Índice de Necesidad"] || colegio["Indice de Necesidad"]);
+      const colorColegio = obtenerColor(indColegio);
+      const catTexto = indColegio >= 58 ? "Muy alta" :
+                       indColegio >= 52 ? "Alta" :
+                       indColegio >= 46 ? "Media" :
+                       indColegio >= 35 ? "Baja" : "Muy baja";
+
+      card.style.borderLeftColor = colorColegio;
+
+      card.innerHTML = `
+        <div class="item-colegio-header">
+          <span class="item-nombre" title="${colegio["Nombre Establecimiento"]}">${colegio["Nombre Establecimiento"]}</span>
+          <span class="item-rbd">RBD: ${colegio.RBD || "-"}</span>
+        </div>
+        <div class="item-metricas">
+          <span class="metrica-chip chip-indice" style="background:${colorColegio}; color:#ffffff;" title="Índice de Necesidad Escolar (escala 1 al 100)">Índice: <strong>${indColegio !== null && !isNaN(indColegio) ? indColegio : '-'}</strong> (${catTexto})</span>
+          <span class="metrica-chip chip-simce" title="Promedio SIMCE 4° Básico">SIMCE: <strong>${simce}</strong></span>
+          <span class="metrica-chip chip-ive" title="Índice de Vulnerabilidad Escolar">IVE: <strong>${ive}</strong></span>
+          <span class="metrica-chip chip-docente" title="Alumnos por docente">Alum/Doc: <strong>${alumDoc}</strong></span>
+        </div>
+        <div class="item-colegio-footer">
+          <span class="badge-contactar-item">✉️ Redactar correo →</span>
+        </div>
+      `;
+
+      // Sincronización: hover en tarjeta -> resalta punto en mapa
+      card.addEventListener("mouseenter", () => {
+        destacarColegio(idx, true);
+      });
+
+      card.addEventListener("mouseleave", () => {
+        destacarColegio(idx, false);
+      });
+
+      // Click en tarjeta -> pulso visual y transporte a la Vista 3 (Correo)
+      card.addEventListener("click", () => {
+        const circle = document.querySelector(`.colegio-punto[data-idx="${idx}"]`);
+        if (circle) {
+          circle.classList.remove("pulso-seleccion");
+          void circle.offsetWidth;
+          circle.classList.add("pulso-seleccion");
+          mostrarTooltipPunto(circle, colegio);
+        }
+        mostrarPanelCorreo(colegio, idx);
+      });
+
+      listaContenedor.appendChild(card);
+    });
+  }
+
+  // Transición suave entre paneles (asegurar que vista-correo también quede oculta)
+  const vistaCorreo = document.getElementById("vista-correo");
+  if (vistaCorreo) {
+    vistaCorreo.classList.remove("activa");
+    vistaCorreo.style.display = "none";
+  }
+
+  if (vistaComuna && vistaEst) {
+    vistaComuna.classList.remove("activa");
+    setTimeout(() => {
+      vistaComuna.style.display = "none";
+      vistaEst.style.display = "flex";
+      setTimeout(() => vistaEst.classList.add("activa"), 20);
+    }, 180);
+  }
+}
+
+// ─── Vista 3: Panel de Redacción de Correo al Sostenedor ─────────────────────
+function mostrarPanelCorreo(colegio, idx) {
+  const vistaEst = document.getElementById("vista-establecimientos");
+  const vistaCorreo = document.getElementById("vista-correo");
+
+  const estNombreEl = document.getElementById("correo-est-nombre");
+  const sostNombreEl = document.getElementById("correo-sostenedor-nombre");
+  const sostEmailEl = document.getElementById("correo-sostenedor-email");
+  const asuntoInput = document.getElementById("correo-asunto");
+  const cuerpoTextarea = document.getElementById("correo-cuerpo");
+  const notifCopiado = document.getElementById("notificacion-copiado");
+
+  if (notifCopiado) notifCopiado.style.display = "none";
+
+  const nombreEstablecimiento = colegio["Nombre Establecimiento"] || "el establecimiento educacional";
+  const nombreSostenedor = colegio["NOMBRE_SOSTENEDOR"] || "Sostenedor";
+  const correoSostenedor = (colegio["CORREO_SOSTENEDOR"] || "").trim();
+
+  if (estNombreEl) estNombreEl.innerText = nombreEstablecimiento;
+  if (sostNombreEl) sostNombreEl.innerText = nombreSostenedor;
+  if (sostEmailEl) sostEmailEl.innerText = correoSostenedor || "Sin correo registrado";
+
+  // Borrador predeterminado: saludo al sostenedor y nombre del establecimiento
+  // (sin SIMCE, RBD ni IVE, y sin el RUT del sostenedor)
+  const asuntoPredeterminado = `Contacto y coordinación - ${nombreEstablecimiento}`;
+  const cuerpoPredeterminado = `Estimado/a representante de ${nombreSostenedor},
+
+Me pongo en contacto con usted en relación al establecimiento ${nombreEstablecimiento}.
+
+[Escriba aquí el detalle de su consulta o propuesta...]
+
+Atentamente,
+[Su Nombre / Institución]`;
+
+  if (asuntoInput) asuntoInput.value = asuntoPredeterminado;
+  if (cuerpoTextarea) cuerpoTextarea.value = cuerpoPredeterminado;
+
+  // Transición suave entre paneles
+  if (vistaEst && vistaCorreo) {
+    vistaEst.classList.remove("activa");
+    setTimeout(() => {
+      vistaEst.style.display = "none";
+      vistaCorreo.style.display = "flex";
+      setTimeout(() => vistaCorreo.classList.add("activa"), 20);
+    }, 180);
+  }
+}
+
+// ─── Sincronización Bidireccional Mapa ↔ Lista ───────────────────────────────
+function destacarColegio(idx, activar) {
+  const circle = document.querySelector(`.colegio-punto[data-idx="${idx}"]`);
+  const card = document.querySelector(`.item-colegio[data-idx="${idx}"]`);
+  const tooltip = document.getElementById("tooltip");
+
+  if (activar) {
+    if (card) card.classList.add("item-activo");
+    if (circle) {
+      circle.classList.add("punto-destacado");
+      const colegio = colegiosComunaActual[idx];
+      if (colegio) mostrarTooltipPunto(circle, colegio);
+    }
+  } else {
+    if (card) card.classList.remove("item-activo");
+    if (circle) circle.classList.remove("punto-destacado");
+    if (tooltip) {
+      tooltip.style.display = "none";
+      tooltip.innerHTML = "";
+    }
+  }
+}
+
+function mostrarTooltipPunto(circle, colegio) {
+  const tooltip = document.getElementById("tooltip");
+  if (!tooltip || !circle || !colegio) return;
+
+  const indColegio = limpiarNumero(colegio["Índice de Necesidad"] || colegio["Indice de Necesidad"]);
+  const colorColegio = obtenerColor(indColegio);
+  const catTexto = indColegio >= 58 ? "Muy alta" :
+                   indColegio >= 52 ? "Alta" :
+                   indColegio >= 46 ? "Media" :
+                   indColegio >= 35 ? "Baja" : "Muy baja";
+
+  tooltip.innerHTML = `
+    <div style="font-weight:800; font-size:13px; color:#2b0b3f; margin-bottom:4px; line-height:1.25;">${colegio["Nombre Establecimiento"]}</div>
+    <div style="display:flex; align-items:center; gap:6px; margin-bottom:5px;">
+      <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:${colorColegio}; box-shadow:0 0 3px ${colorColegio};"></span>
+      <span style="font-size:11.5px; font-weight:700; color:${colorColegio};">Índice: ${indColegio !== null && !isNaN(indColegio) ? indColegio : '-'} / 100 (${catTexto})</span>
+    </div>
+    <div style="font-size:10.5px; color:#777; margin-bottom:4px;">RBD: ${colegio.RBD || "-"}</div>
+    <div style="font-size:11px; color:#444; line-height:1.4;">
+      <span title="Promedio nacional referencial: 256,7" style="cursor:help; border-bottom:1px dotted #888;">SIMCE: <strong>${colegio["Promedio SIMCE"] || "-"}</strong> pts</span><br>
+      IVE: <strong>${colegio["IVE"] || "-"}</strong><br>
+      Alumnos/docente: <strong>${colegio["Alumnos por docente"] || "-"}</strong>
+    </div>
+  `;
+
+  const ptRect = circle.getBoundingClientRect();
+  const mapRect = document.getElementById("contenedor-mapa").getBoundingClientRect();
+  let left = ptRect.left - mapRect.left + ptRect.width * 0.5 + 12;
+  let top = ptRect.top - mapRect.top - 15;
+
+  if (left + 230 > mapRect.width) {
+    left = (ptRect.left - mapRect.left) - 220;
+  }
+  if (top < 15) {
+    top = ptRect.bottom - mapRect.top + 10;
+  }
+
+  tooltip.style.left = `${Math.max(10, left)}px`;
+  tooltip.style.top  = `${top}px`;
+  tooltip.style.display = "block";
+}
+
+// ─── Buscador interactivo en tiempo real ─────────────────────────────────────
+function inicializarBuscadorColegios() {
+  const input = document.getElementById("buscador-colegios");
+  const btnLimpiar = document.getElementById("btn-limpiar-busqueda");
+  const contador = document.getElementById("contador-filtrados");
+  const sinResultados = document.getElementById("sin-colegios-msg");
+
+  if (!input) return;
+
+  input.addEventListener("input", function () {
+    const q = normalizar(this.value);
+    if (btnLimpiar) btnLimpiar.style.display = q ? "block" : "none";
+
+    let visibles = 0;
+    colegiosComunaActual.forEach((col, idx) => {
+      const nombreNorm = normalizar(col["Nombre Establecimiento"]);
+      const rbdStr = col.RBD ? col.RBD.toString() : "";
+      const coincide = !q || nombreNorm.includes(q) || rbdStr.includes(q);
+
+      const card = document.querySelector(`.item-colegio[data-idx="${idx}"]`);
+      const circle = document.querySelector(`.colegio-punto[data-idx="${idx}"]`);
+
+      if (card) card.style.display = coincide ? "block" : "none";
+      if (circle) {
+        circle.style.opacity = coincide ? "0.95" : "0.12";
+        circle.style.pointerEvents = coincide ? "auto" : "none";
+      }
+      if (coincide) visibles++;
+    });
+
+    const total = colegiosComunaActual.length;
+    if (contador) {
+      contador.innerText = q
+        ? `Mostrando ${visibles} de ${total} establecimientos`
+        : `Mostrando ${total} establecimientos`;
+    }
+
+    if (sinResultados) {
+      sinResultados.style.display = (visibles === 0 && total > 0) ? "block" : "none";
+    }
+  });
+
+  if (btnLimpiar) {
+    btnLimpiar.addEventListener("click", () => {
+      input.value = "";
+      input.dispatchEvent(new Event("input"));
+      input.focus();
+    });
+  }
+}
+
+inicializarBuscadorColegios();
+
+// ─── Inicializar controles de la Vista de Correo al Sostenedor ────────────────
+function inicializarVistaCorreo() {
+  const btnVolverLista = document.getElementById("btn-volver-lista");
+  const btnAbrirCorreo = document.getElementById("btn-abrir-cliente-correo");
+  const btnCopiarTodo = document.getElementById("btn-copiar-todo-mensaje");
+  const btnCopiarEmail = document.getElementById("btn-copiar-email-solo");
+  const notifCopiado = document.getElementById("notificacion-copiado");
+
+  if (btnVolverLista) {
+    btnVolverLista.addEventListener("click", () => {
+      const vistaEst = document.getElementById("vista-establecimientos");
+      const vistaCorreo = document.getElementById("vista-correo");
+      if (vistaEst && vistaCorreo) {
+        vistaCorreo.classList.remove("activa");
+        setTimeout(() => {
+          vistaCorreo.style.display = "none";
+          vistaEst.style.display = "flex";
+          setTimeout(() => vistaEst.classList.add("activa"), 20);
+        }, 180);
+      }
+    });
+  }
+
+  if (btnAbrirCorreo) {
+    btnAbrirCorreo.addEventListener("click", () => {
+      const emailEl = document.getElementById("correo-sostenedor-email");
+      const email = emailEl ? emailEl.innerText.trim() : "";
+      const asunto = (document.getElementById("correo-asunto")?.value || "").trim();
+      const cuerpo = document.getElementById("correo-cuerpo")?.value || "";
+
+      if (!email || email === "Sin correo registrado" || email === "-") {
+        alert("Este sostenedor no posee una casilla de correo registrada.");
+        return;
+      }
+
+      const mailtoUrl = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+      window.location.href = mailtoUrl;
+    });
+  }
+
+  if (btnCopiarTodo) {
+    btnCopiarTodo.addEventListener("click", () => {
+      const emailEl = document.getElementById("correo-sostenedor-email");
+      const email = emailEl ? emailEl.innerText.trim() : "";
+      const asunto = (document.getElementById("correo-asunto")?.value || "").trim();
+      const cuerpo = document.getElementById("correo-cuerpo")?.value || "";
+
+      const textoCompleto = `Destinatario: ${email}\nAsunto: ${asunto}\n\n${cuerpo}`;
+
+      navigator.clipboard.writeText(textoCompleto).then(() => {
+        if (notifCopiado) {
+          notifCopiado.style.display = "block";
+          setTimeout(() => {
+            notifCopiado.style.display = "none";
+          }, 2500);
+        }
+      }).catch(err => {
+        console.error("Error al copiar texto:", err);
+      });
+    });
+  }
+
+  if (btnCopiarEmail) {
+    btnCopiarEmail.addEventListener("click", () => {
+      const emailEl = document.getElementById("correo-sostenedor-email");
+      const email = emailEl ? emailEl.innerText.trim() : "";
+
+      if (email && email !== "Sin correo registrado" && email !== "-") {
+        navigator.clipboard.writeText(email).then(() => {
+          const original = btnCopiarEmail.innerText;
+          btnCopiarEmail.innerText = "✓ Copiado";
+          setTimeout(() => {
+            btnCopiarEmail.innerText = original;
+          }, 1800);
+        });
+      }
+    });
+  }
+}
+
+inicializarVistaCorreo();
+
+// ─── Conectar Eventos de Botones y Mapa ──────────────────────────────────────
+const btnVerEstablecimientos = document.getElementById("btn-ver-establecimientos");
+if (btnVerEstablecimientos) {
+  btnVerEstablecimientos.addEventListener("click", function () {
+    if (comunaSeleccionada) {
+      activarModoEstablecimientos(comunaSeleccionada);
+    }
+  });
+}
+
+const btnVolverMapa = document.getElementById("btn-volver-mapa");
+if (btnVolverMapa) {
+  btnVolverMapa.addEventListener("click", function () {
+    resetearZoom();
+  });
+}
 
 // Clic en el fondo del mapa → volver a vista completa
 document.getElementById("contenedor-mapa").addEventListener("click", (e) => {
@@ -343,10 +840,10 @@ document.getElementById("contenedor-mapa").addEventListener("click", (e) => {
   }
 });
 
-// ─── Dibujar colegios georreferenciados reales dentro del contorno ───────────
-function dibujarColegios(nombreComuna, bbox, pathComuna) {
-  const svg      = document.getElementById("mapa-svg");
-  const tooltip  = document.getElementById("tooltip");
+// ─── Dibujar colegios georreferenciados con micro-dispersión suave ────────────
+function dibujarColegios(nombreComuna, bbox, pathComuna, svgRadius = 1.0) {
+  const svg = document.getElementById("mapa-svg");
+  const tooltip = document.getElementById("tooltip");
   document.querySelectorAll(".colegio-punto").forEach(p => p.remove());
 
   const colegios = establecimientosPorComuna[normalizar(nombreComuna)] || [];
@@ -356,7 +853,7 @@ function dibujarColegios(nombreComuna, bbox, pathComuna) {
     return;
   }
 
-  // Objeto punto para prueba de pertenencia geométrica en SVG
+  // Prueba de pertenencia geométrica en SVG
   let testPoint = null;
   if (svg.createSVGPoint) {
     testPoint = svg.createSVGPoint();
@@ -374,15 +871,10 @@ function dibujarColegios(nombreComuna, bbox, pathComuna) {
     return true;
   }
 
-  // Centroide aproximado de la comuna (para atraer suavemente puntos en bordes cóncavos)
   const centroideX = bbox.x + bbox.width * 0.5;
   const centroideY = bbox.y + bbox.height * 0.5;
 
-  // Radio adaptativo según escala de la comuna
-  const dimensionMenor = Math.min(bbox.width, bbox.height);
-  const radioAdaptivo  = Math.max(1.5, Math.min(2.8, dimensionMenor / 32));
-
-  // 1. Obtener rango geográfico (Lat/Lng) de los colegios de esta comuna
+  // 1. Obtener rango geográfico (Lat/Lng)
   const coordsValidas = colegios
     .map(c => ({ lat: parseFloat(c.Latitud), lng: parseFloat(c.Longitud) }))
     .filter(c => !isNaN(c.lat) && !isNaN(c.lng));
@@ -398,20 +890,20 @@ function dibujarColegios(nombreComuna, bbox, pathComuna) {
     minLng = Math.min(...lngs);
     maxLng = Math.max(...lngs);
 
-    // Evitar división por cero si los colegios tienen la misma coordenada
     if (maxLat === minLat) { minLat -= 0.005; maxLat += 0.005; }
     if (maxLng === minLng) { minLng -= 0.005; maxLng += 0.005; }
   }
 
-  // Margen interno dentro del bbox (10%) para que los colegios queden con aire respecto a los bordes
-  const padX = bbox.width * 0.10;
-  const padY = bbox.height * 0.10;
+  // Margen interno dentro del bbox (8%)
+  const padX = bbox.width * 0.08;
+  const padY = bbox.height * 0.08;
   const innerX = bbox.x + padX;
   const innerY = bbox.y + padY;
-  const innerW = Math.max(bbox.width - padX * 2, 1);
-  const innerH = Math.max(bbox.height - padY * 2, 1);
+  const innerW = Math.max(bbox.width - padX * 2, 0.1);
+  const innerH = Math.max(bbox.height - padY * 2, 0.1);
 
   const puntosColocados = [];
+  const minDist = svgRadius * 2.1;
 
   colegios.forEach((colegio, idx) => {
     let px, py;
@@ -419,9 +911,8 @@ function dibujarColegios(nombreComuna, bbox, pathComuna) {
     const lng = parseFloat(colegio.Longitud);
 
     if (tieneGeoReal && !isNaN(lat) && !isNaN(lng)) {
-      // Proyección geográfica proporcional al cuadrante real de la comuna
-      const u = (lng - minLng) / (maxLng - minLng); // 0 (Oeste) -> 1 (Este)
-      const v = (maxLat - lat) / (maxLat - minLat); // 0 (Norte) -> 1 (Sur)
+      const u = (lng - minLng) / (maxLng - minLng);
+      const v = (maxLat - lat) / (maxLat - minLat);
       px = innerX + (u * innerW);
       py = innerY + (v * innerH);
     } else {
@@ -429,7 +920,7 @@ function dibujarColegios(nombreComuna, bbox, pathComuna) {
       py = centroideY;
     }
 
-    // 2. Si cae fuera de la silueta real por concavidad del contorno, atraer hacia el centroide
+    // 2. Si cae fuera de la silueta por concavidad, atraer hacia el centroide
     if (!estaDentroDeComuna(px, py)) {
       for (let step = 1; step <= 25; step++) {
         const factor = step * 0.04;
@@ -443,22 +934,21 @@ function dibujarColegios(nombreComuna, bbox, pathComuna) {
       }
     }
 
-    // 3. Resolución de solapamiento (Micro-dispersión si dos colegios comparten el mismo predio)
+    // 3. Resolución de solapamiento proporcional al tamaño del círculo
     let intentosJitter = 0;
-    while (intentosJitter < 8) {
+    while (intentosJitter < 10) {
       let solapado = false;
       for (let i = 0; i < puntosColocados.length; i++) {
         const d = distancia(px, py, puntosColocados[i].x, puntosColocados[i].y);
-        if (d < radioAdaptivo * 1.8) {
+        if (d < minDist) {
           solapado = true;
           break;
         }
       }
       if (!solapado) break;
 
-      // Desplazamiento radial sutil en espiral áurea
       const angulo = (intentosJitter * 2.399) + (idx * 0.5);
-      const radioJitter = (intentosJitter + 1) * (radioAdaptivo * 0.9);
+      const radioJitter = (intentosJitter + 1) * (svgRadius * 1.05);
       const nuevoX = px + Math.cos(angulo) * radioJitter;
       const nuevoY = py + Math.sin(angulo) * radioJitter;
 
@@ -471,34 +961,47 @@ function dibujarColegios(nombreComuna, bbox, pathComuna) {
 
     puntosColocados.push({ x: px, y: py });
 
-    // Crear el elemento visual en el SVG
+    // Crear el elemento SVG del punto
     const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     circle.setAttribute("cx", px);
     circle.setAttribute("cy", py);
-    circle.setAttribute("r",  radioAdaptivo);
+    circle.setAttribute("r",  svgRadius);
     circle.setAttribute("class", "colegio-punto");
-    circle.style.animationDelay = `${Math.min(idx * 0.012, 0.4)}s`;
+    circle.setAttribute("data-idx", idx);
+    if (colegio.RBD) circle.setAttribute("data-rbd", colegio.RBD);
+    circle.style.animationDelay = `${Math.min(idx * 0.01, 0.35)}s`;
 
+    const indColegio = limpiarNumero(colegio["Índice de Necesidad"] || colegio["Indice de Necesidad"]);
+    const colorColegio = obtenerColor(indColegio);
+    circle.setAttribute("fill", colorColegio);
+    circle.style.fill = colorColegio;
+    if (indColegio !== null && !isNaN(indColegio)) {
+      circle.setAttribute("data-indice", indColegio);
+    }
+
+    // Sincronización: hover en mapa -> destaca en lista con scroll suave
     circle.addEventListener("mouseenter", () => {
-      tooltip.innerHTML = `
-        <span style="color:#e03131; font-weight:700; font-size:14px;">${colegio["Nombre Establecimiento"]}</span><br>
-        <span style="color:#aaa; font-size:11px;">RBD: ${colegio.RBD || "-"}</span><br>
-        <span title="Promedio nacional: 256,7" style="cursor:help; border-bottom:1px dotted #ccc;">SIMCE: ${colegio["Promedio SIMCE"] || "-"}</span><br>
-        IVE: ${colegio["IVE"] || "-"}<br>
-        Alumnos por docente: ${colegio["Alumnos por docente"] || "-"}
-      `;
-      tooltip.style.display = "block";
-    });
-
-    circle.addEventListener("mousemove", (e) => {
-      const rect = document.getElementById("contenedor-mapa").getBoundingClientRect();
-      tooltip.style.left = (e.clientX - rect.left + 15) + "px";
-      tooltip.style.top  = (e.clientY - rect.top  - 15) + "px";
+      destacarColegio(idx, true);
+      const card = document.querySelector(`.item-colegio[data-idx="${idx}"]`);
+      if (card) {
+        card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
     });
 
     circle.addEventListener("mouseleave", () => {
-      tooltip.style.display = "none";
-      tooltip.innerHTML = "";
+      destacarColegio(idx, false);
+    });
+
+    circle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      circle.classList.remove("pulso-seleccion");
+      void circle.offsetWidth;
+      circle.classList.add("pulso-seleccion");
+      const card = document.querySelector(`.item-colegio[data-idx="${idx}"]`);
+      if (card) {
+        card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+      mostrarPanelCorreo(colegio, idx);
     });
 
     svg.appendChild(circle);
@@ -555,7 +1058,7 @@ Papa.parse("datos_comunas.csv", {
         datosComunas[normalizar(nom)] = {
           indice:       limpiarNumero(f[cIndice]),
           colegios:     f[cColegios]      ? f[cColegios].toString().trim()      : "-",
-          prioritarios: limpiarNumero(f[cPrioritarios]),
+          prioritarios: f[cPrioritarios]  ? f[cPrioritarios].toString().trim()  : "-",
           criticos:     f[cCriticos]      ? f[cCriticos].toString().trim()      : "-",
           simce:        limpiarNumero(f[cSimce])
         };
@@ -570,13 +1073,20 @@ Papa.parse("datos_comunas.csv", {
   }
 });
 
-// ─── Carga de datos de colegios (datos_colegios.csv) ─────────────────────────
-Papa.parse("datos_colegios.csv", {
+// ─── Carga de datos de colegios con sostenedores ──────────────────────────────
+Papa.parse("colegios_con_sostenedores.csv", {
   download: true,
   header: true,
   skipEmptyLines: true,
-  transformHeader: function (h) { return h.trim(); },
+  transformHeader: function (h) { return h.replace(/^\ufeff/, "").trim(); },
   complete: function (resultado) {
+    // Ordenar establecimientos por Índice de Necesidad (descendente: mayor urgencia primero)
+    resultado.data.sort((a, b) => {
+      const indA = parseFloat((a["Índice de Necesidad"] || a["Indice de Necesidad"] || "0").toString().replace(',', '.'));
+      const indB = parseFloat((b["Índice de Necesidad"] || b["Indice de Necesidad"] || "0").toString().replace(',', '.'));
+      return (isNaN(indB) ? 0 : indB) - (isNaN(indA) ? 0 : indA);
+    });
+
     resultado.data.forEach(fila => {
       if (fila.Comuna && fila.Comuna.trim() !== "") {
         const key = normalizar(fila.Comuna);
@@ -589,11 +1099,25 @@ Papa.parse("datos_colegios.csv", {
 
 // ─── Control de Navegación por Clic / Teclado (Diapositivas - Storytelling) ───
 let slideActual = 0;
-const totalSlides = 4; // 3 diapositivas de storytelling + 1 diapositiva con el mapa
+const totalSlides = 6; // 5 diapositivas de storytelling + 1 diapositiva con el mapa
 
 function siguienteSlide() {
   if (slideActual < totalSlides - 1) {
     slideActual++;
+    actualizarPosicionSlides();
+  }
+}
+
+function anteriorSlide() {
+  if (slideActual > 0) {
+    slideActual--;
+    actualizarPosicionSlides();
+  }
+}
+
+function irASlide(index) {
+  if (index >= 0 && index < totalSlides) {
+    slideActual = index;
     actualizarPosicionSlides();
   }
 }
@@ -608,10 +1132,33 @@ function actualizarPosicionSlides() {
   if (container) {
     container.style.transform = `translateY(-${slideActual * 100}vh)`;
   }
+  // Actualizar indicadores visuales laterales (dots)
+  const dots = document.querySelectorAll(".nav-dot");
+  dots.forEach((dot, idx) => {
+    if (idx === slideActual) {
+      dot.classList.add("activo");
+    } else {
+      dot.classList.remove("activo");
+    }
+  });
+
+  // Actualizar enlaces de la barra de navegación superior
+  const navLinks = document.querySelectorAll(".nav-btn-link");
+  navLinks.forEach((link, idx) => {
+    if (idx === slideActual) {
+      link.classList.add("activo");
+    } else {
+      link.classList.remove("activo");
+    }
+  });
 }
 
 // Navegación con teclado
 window.addEventListener("keydown", (e) => {
+  // No capturar flechas si el usuario está redactando en el formulario de correo
+  if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) {
+    return;
+  }
   if (e.key === "ArrowDown" || e.key === "PageDown") {
     if (slideActual < totalSlides - 1) {
       slideActual++;

@@ -7,34 +7,277 @@
 </head>
 <body>
 
+  <!-- BARRA DE NAVEGACIÓN SUPERIOR (TOP NAVBAR) -->
+  <header class="navbar-superior" id="navbarSuperior">
+    <div class="navbar-marca" onclick="irASlide(0)" title="Ir al inicio">
+      <span class="navbar-logo-icono">📍</span>
+      <div class="navbar-titulos">
+        <span class="navbar-titulo-principal">Necesidad Escolar RM</span>
+        <span class="navbar-subtitulo">Plataforma de Priorización para Fundaciones</span>
+      </div>
+    </div>
+
+    <nav class="navbar-links" aria-label="Navegación principal">
+      <button class="nav-btn-link activo" onclick="irASlide(0)" title="1. Diagnóstico Regional">
+        <span>1. Diagnóstico</span>
+      </button>
+      <button class="nav-btn-link" onclick="irASlide(1)" title="2. Metodología del Índice">
+        <span>2. Metodología</span>
+      </button>
+      <button class="nav-btn-link" onclick="irASlide(2)" title="3. Brecha Territorial">
+        <span>3. Brecha Territorial</span>
+      </button>
+      <button class="nav-btn-link" onclick="irASlide(3)" title="4. Hacinamiento y Apoyo">
+        <span>4. Hacinamiento</span>
+      </button>
+      <button class="nav-btn-link" onclick="irASlide(4)" title="5. Red de Apoyo Escolar">
+        <span>5. Red de Apoyo</span>
+      </button>
+      <button class="nav-btn-link nav-btn-destacado" onclick="irASlide(5)" title="6. Explorar Mapa Interactivo">
+        <span>🗺️ Mapa Interactivo</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- NAVEGACIÓN FLOTANTE LATERAL (INDICADORES DE DIAPOSITIVAS) -->
+  <nav class="indicadores-slides" id="indicadoresSlides" aria-label="Navegación de diapositivas">
+    <button class="nav-dot activo" onclick="irASlide(0)" title="1. Desigualdad Invisible"><span class="nav-label">1. Desigualdad Invisible</span></button>
+    <button class="nav-dot" onclick="irASlide(1)" title="2. Índice de Necesidad"><span class="nav-label">2. Índice de Necesidad</span></button>
+    <button class="nav-dot" onclick="irASlide(2)" title="3. Brecha Territorial"><span class="nav-label">3. Brecha Territorial</span></button>
+    <button class="nav-dot" onclick="irASlide(3)" title="4. Hacinamiento Escolar"><span class="nav-label">4. Hacinamiento Escolar</span></button>
+    <button class="nav-dot" onclick="irASlide(4)" title="5. Red de Apoyo"><span class="nav-label">5. Red de Apoyo</span></button>
+    <button class="nav-dot" onclick="irASlide(5)" title="6. Mapa Interactivo"><span class="nav-label">6. Mapa Interactivo</span></button>
+  </nav>
+
   <!-- CONTENEDOR DE DIAPOSITIVAS -->
   <div class="slides-container" id="slidesContainer">
 
-    <!-- Página 1 -->
-    <section class="slide">
-      <div class="slide-content">
+    <!-- Diapositiva 1: Diagnóstico Territorial -->
+    <section class="slide slide-story">
+      <div class="slide-content-amplio">
+        <span class="story-tag">DIAGNÓSTICO REGIONAL RM</span>
         <h1>La desigualdad invisible en la Región Metropolitana</h1>
-        <p>El territorio metropolitano no es homogéneo. Al analizar las comunas de Santiago, las brechas socioeconómicas y educativas marcan profundas diferencias territoriales que impactan directamente en las oportunidades de aprendizaje de los estudiantes.</p>
+        <p class="slide-descripcion">El territorio metropolitano no es homogéneo. Al analizar las comunas de Santiago, las brechas socioeconómicas y educativas marcan profundas diferencias territoriales que impactan directamente en las oportunidades de aprendizaje de los estudiantes.</p>
+
+        <!-- Tarjetas de impacto cuantitativo -->
+        <div class="metricas-grid">
+          <div class="metrica-card">
+            <span class="metrica-numero">52</span>
+            <span class="metrica-titulo">Comunas Mapeadas</span>
+            <span class="metrica-sub">Análisis integral del territorio regional</span>
+          </div>
+          <div class="metrica-card metrica-destacada">
+            <span class="metrica-numero">+55 pts</span>
+            <span class="metrica-titulo">Brecha SIMCE</span>
+            <span class="metrica-sub">Diferencia entre sectores de altos y bajos ingresos</span>
+          </div>
+          <div class="metrica-card">
+            <span class="metrica-numero">1.530</span>
+            <span class="metrica-titulo">Establecimientos</span>
+            <span class="metrica-sub">Georreferenciados con contacto de sostenedores</span>
+          </div>
+        </div>
       </div>
       <button class="btn-flecha" onclick="siguienteSlide()">Siguiente <span>↓</span></button>
     </section>
 
-    <!-- Página 2 -->
-    <section class="slide">
-      <div class="slide-content">
-        <h2>Alta vulnerabilidad en la periferia</h2>
-        <p>Las comunas de la periferia y el sector sur concentran los índices de necesidad más elevados, albergando una gran proporción de alumnos prioritarios y establecimientos educacionales con alta criticidad.</p>
+    <!-- Diapositiva 2: Metodología del Índice de Necesidad (Ubicada en segundo lugar) -->
+    <section class="slide slide-story">
+      <div class="slide-content-amplio">
+        <span class="story-tag tag-metodologia">METODOLOGÍA DE PRIORIZACIÓN</span>
+        <h2>Índice de Necesidad Escolar (Escala 1 al 100)</h2>
+        <p class="slide-descripcion">Para identificar y priorizar los establecimientos educativos que requieren un mayor apoyo económico y pedagógico, se construyó un <strong>Índice de Necesidad Escolar</strong> con una escala del 1 al 100. Este indicador combina de manera equitativa tres factores fundamentales en la realidad educativa:</p>
+
+        <!-- 3 Pilares metodológicos equitativos -->
+        <div class="metodologia-grid">
+          <div class="metodologia-card">
+            
+            
+            <h3>1. Índice de Vulnerabilidad (IVE)</h3>
+            <p>Mide la proporción de estudiantes en situación de vulnerabilidad socioeconómica y necesidad de apoyo integral.</p>
+          </div>
+
+          <div class="metodologia-card">
+            
+            <h3>2. Rendimiento SIMCE</h3>
+            <p>Refleja las brechas del aprendizaje en el aula, donde a menor rendimiento corresponde una mayor prioridad de apoyo.</p>
+          </div>
+
+          <div class="metodologia-card">
+            
+            
+            <h3>3. Ratio Alumnos por Docente</h3>
+            <p>Refleja la exigencia sobre el equipo de profesores y el nivel de hacinamiento en las aulas escolares.</p>
+          </div>
+        </div>
+
+        <p class="metodologia-conclusion">Al normalizar y estandarizar estas variables en un único valor numérico, el índice permite clasificar objetivamente a los colegios de la Región Metropolitana según su nivel de prioridad y vulnerabilidad.</p>
       </div>
       <button class="btn-flecha" onclick="siguienteSlide()">Siguiente <span>↓</span></button>
     </section>
 
-    <!-- Página 3 -->
-    <section class="slide">
-      <div class="slide-content">
-        <h2>El contraste con el sector oriente</h2>
-        <p>En contraparte, las comunas del sector nororiente muestran indicadores de necesidad muy bajos y puntajes SIMCE muy por encima del promedio nacional, evidenciando la profunda segregación espacial de la educación.</p>
+    <!-- Diapositiva 3: Brecha Territorial (Periferia vs Sector Oriente) -->
+    <section class="slide slide-story">
+      <div class="slide-content-amplio">
+        <span class="story-tag tag-contraste">SEGREGACIÓN ESPACIAL</span>
+        <h2>Alta vulnerabilidad en la periferia vs. Sector Oriente</h2>
+        <p class="slide-descripcion">Las comunas de la periferia y el sector sur concentran los índices de necesidad más elevados y alta proporción de alumnos prioritarios. En contraparte, el sector nororiente muestra indicadores de necesidad muy bajos y SIMCE muy superior al promedio nacional.</p>
+
+        <!-- Comparador territorial lado a lado -->
+        <div class="contraste-grid">
+          <div class="contraste-col col-periferia">
+            <div class="contraste-header">
+              <span class="contraste-sector">Sector Periferia & Sur</span>
+              <span class="contraste-badge badge-alto">Necesidad Crítica</span>
+            </div>
+            <ul class="contraste-lista">
+              <li><strong>Índice de Necesidad:</strong> 58.9 – 64.5 / 100</li>
+              <li><strong>SIMCE:</strong> 248 – 255 puntos</li>
+              <li><strong>Alumnos Prioritarios (SEP):</strong> > 60% (hasta 100% crítico)</li>
+              <li><strong>Acceso pedagógico:</strong> Urgencia crítica de alianzas y fundaciones de apoyo</li>
+            </ul>
+          </div>
+
+          <div class="contraste-col col-oriente">
+            <div class="contraste-header">
+              <span class="contraste-sector">Sector Nororiente</span>
+              <span class="contraste-badge badge-bajo">Necesidad Muy Baja</span>
+            </div>
+            <ul class="contraste-lista">
+              <li><strong>Índice de Necesidad:</strong> 8.7 – 12.3 / 100</li>
+              <li><strong>SIMCE:</strong> 292 – 303 puntos</li>
+              <li><strong>Alumnos Prioritarios (SEP):</strong> &lt; 35%</li>
+              <li><strong>Acceso pedagógico:</strong> Alto soporte extracurricular y recursos complementarios</li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <button class="btn-flecha" onclick="siguienteSlide()">Explorar el Mapa <span>↓</span></button>
+      <button class="btn-flecha" onclick="siguienteSlide()">Siguiente <span>↓</span></button>
+    </section>
+
+    <!-- Diapositiva 4: Hacinamiento Escolar y Asimetría Pedagógica -->
+    <section class="slide slide-story">
+      <div class="slide-content-amplio">
+        <span class="story-tag tag-pedagogico">BARRERAS AL APRENDIZAJE</span>
+        <h2>Asimetría en el apoyo pedagógico y hacinamiento escolar</h2>
+        <p class="slide-descripcion">Sumado a eso, existe una profunda asimetría en la distribución del apoyo pedagógico complementario, lo que dificulta el aprendizaje personalizado de los estudiantes y genera brechas insalvables a temprana edad.</p>
+
+        <!-- Comparador visual de hacinamiento: 13 vs 25+ alumnos -->
+        <div class="hacinamiento-comparador">
+          <!-- Caso 1: Promedio RM -->
+          <div class="hacinamiento-col">
+            <div class="hacinamiento-header">
+              <span class="hacinamiento-tag tag-promedio">PROMEDIO REGIONAL</span>
+              <h3>13 estudiantes por docente</h3>
+            </div>
+            <p class="hacinamiento-desc">El hacinamiento escolar promedio en la Región Metropolitana es de <strong>13 estudiantes por docente contratado</strong>.</p>
+            
+            <!-- Pictograma 13 estudiantes (7 + 6) -->
+            <div class="pictograma-bloque">
+              <div class="pictograma-fila-est">
+                <svg class="icono-estudiante-svg icono-neutral" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-neutral" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-neutral" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-neutral" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-neutral" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-neutral" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-neutral" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+              </div>
+              <div class="pictograma-fila-est">
+                <svg class="icono-estudiante-svg icono-neutral" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-neutral" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-neutral" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-neutral" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-neutral" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-neutral" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Caso 2: Aulas Vulnerables -->
+          <div class="hacinamiento-col col-alerta">
+            <div class="hacinamiento-header">
+              <span class="hacinamiento-tag tag-critico">AULAS VULNERABLES</span>
+              <h3>Más de 25 alumnos por docente</h3>
+            </div>
+            <p class="hacinamiento-desc">Sin embargo, la realidad en las aulas vulnerables es muy distinta: <strong>el hacinamiento crítico, con más de 25 alumnos por docente</strong>, predomina en establecimientos con alta vulnerabilidad.</p>
+            
+            <!-- Pictograma 25 estudiantes (13 + 12) saturado en rojo -->
+            <div class="pictograma-bloque">
+              <div class="pictograma-fila-est">
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+              </div>
+              <div class="pictograma-fila-est">
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+                <svg class="icono-estudiante-svg icono-alerta" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-flecha" onclick="siguienteSlide()">Siguiente <span>↓</span></button>
+    </section>
+
+    <!-- Diapositiva 5: Llamado a la Acción para Fundaciones y Organizaciones -->
+    <section class="slide slide-story">
+      <div class="slide-content-amplio">
+        <span class="story-tag tag-alianza">RED DE COLABORACIÓN Y APOYO</span>
+        <h2>Invitación a fundaciones y organizaciones educativas</h2>
+        <p class="slide-descripcion">Las tutorías, mentorías y programas de refuerzo escolar tienen el poder de transformar trayectorias académicas y de vida. Esta plataforma pone a disposición de fundaciones, ONG y líderes pedagógicos la información territorial clave para canalizar su esfuerzo donde más se necesita y conectar directamente con las comunidades escolares.</p>
+
+        <!-- Grid de 3 oportunidades de articulación -->
+        <div class="fundaciones-grid">
+          <div class="fundacion-card">
+            
+            <h3>Focalización Estratégica</h3>
+            <p>Identifica con precisión territorial los colegios de mayor urgencia según el Índice de Necesidad, optimizando el despliegue de voluntarios y recursos.</p>
+          </div>
+
+          <div class="fundacion-card">
+            
+            <h3>Vinculación sin Fricción</h3>
+            <p>Accede directamente a los datos de contacto y correos institucionales de los sostenedores para coordinar convenios de apoyo pedagógico y socioemocional.</p>
+          </div>
+
+          <div class="fundacion-card">
+            
+            <h3>Contacto Ágil y Personalizado</h3>
+            <p>Genera en segundos propuestas de vinculación y cartas de presentación con plantillas adaptadas a la realidad de cada establecimiento.</p>
+          </div>
+        </div>
+
+        <!-- Banner de llamado a la acción -->
+        <div class="banner-invitacion">
+          <div class="banner-icono">💡</div>
+          <div class="banner-invitacion-texto">
+            <h4>¿Tu organización busca escuelas prioritarias para intervenir?</h4>
+            <p>Explora el mapa comunal, selecciona los establecimientos críticos y envía tu propuesta de colaboración en un solo clic.</p>
+          </div>
+        </div>
+      </div>
+      <button class="btn-flecha btn-flecha-explorar" onclick="siguienteSlide()">Ingresar al Mapa Interactivo y Contactar <span>↓</span></button>
     </section>
 
     <!-- Página 4: Mapa Interactivo (Aparece al final) -->
@@ -50,38 +293,132 @@
         </div>
 
         <div class="panel-info">
-          <section id="tarjeta-datos" class="tarjeta-datos">
-            <h2 id="comuna-nombre">Pasa el cursor sobre una comuna</h2>
-            <div id="comuna-detalles" style="display: none;">
-              <p><strong>Índice de Necesidad:</strong> <span id="val-indice">-</span> / 100</p>
-              <p><strong>Total Colegios:</strong> <span id="val-colegios">-</span></p>
-              <p><strong>% Colegios SEP Críticos:</strong> <span id="val-criticos">-</span></p>
-              <p><strong>SIMCE Mat. 4° Básico:</strong> <span id="val-simce" title="Promedio nacional referencial: 256,7 (máx 500 pts.)" style="cursor: help; border-bottom: 1px dotted #888;">-</span> pts</p>
-              <p><strong>Alumnos Prioritarios:</strong> <span id="val-prioritarios">-</span></p>
-              <button class="btn-accion">Ver establecimientos</button>
-            </div>
-          </section>
+          <!-- Vista 1: Resumen Comunal y Leyenda -->
+          <div id="vista-comuna" class="vista-panel activa">
+            <section id="tarjeta-datos" class="tarjeta-datos">
+              <h2 id="comuna-nombre">Hacer clic sobre una comuna</h2>
+              <div id="comuna-detalles">
+                <p><strong>Índice de Necesidad:</strong> <span id="val-indice">-</span> / 100</p>
+                <p><strong>Colegios analizados:</strong> <span id="val-colegios">-</span></p>
+                <p><strong>% Colegios SEP Críticos:</strong> <span id="val-criticos">-</span></p>
+                <p><strong>SIMCE:</strong> <span id="val-simce" title="Promedio nacional referencial: 256,7 (máx 500 pts.)" style="cursor: help; border-bottom: 1px dotted #888;">-</span> pts</p>
+                <p><strong>Alumnos Prioritarios:</strong> <span id="val-prioritarios">-</span></p>
+                <button class="btn-accion" id="btn-ver-establecimientos">Ver establecimientos</button>
+              </div>
+            </section>
+            <section class="leyenda">
+              <h3>Índice de Necesidad</h3>
+              <div class="barra-leyenda-container">
+                <div class="barra-colores">
+                  <div class="segmento c-muy-baja" title="Muy baja (< 35)"></div>
+                  <div class="segmento c-baja" title="Baja (35 - 46)"></div>
+                  <div class="segmento c-media" title="Media (46 - 52)"></div>
+                  <div class="segmento c-alta" title="Alta (52 - 58)"></div>
+                  <div class="segmento c-muy-alta" title="Muy alta (> 58)"></div>
+                </div>
+                <div class="numeros-leyenda">
+                  <span>&lt;35</span>
+                  <span>35</span>
+                  <span>46</span>
+                  <span>52</span>
+                  <span>58</span>
+                  <span>&gt;58</span>
+                </div>
+              </div>
+            </section>
+          </div>
 
-          <section class="leyenda">
-            <h3>Índice de Necesidad</h3>
-            <div class="barra-leyenda-container">
-              <div class="barra-colores">
-                <div class="segmento c-muy-baja" title="Muy baja (< 35)"></div>
-                <div class="segmento c-baja" title="Baja (35 - 46)"></div>
-                <div class="segmento c-media" title="Media (46 - 52)"></div>
-                <div class="segmento c-alta" title="Alta (52 - 58)"></div>
-                <div class="segmento c-muy-alta" title="Muy alta (> 58)"></div>
-              </div>
-              <div class="numeros-leyenda">
-                <span>&lt;35</span>
-                <span>35</span>
-                <span>46</span>
-                <span>52</span>
-                <span>58</span>
-                <span>&gt;58</span>
+          <!-- Vista 2: Explorador de Establecimientos (Modo Zoom) -->
+          <div id="vista-establecimientos" class="vista-panel" style="display: none;">
+            <div class="panel-est-header">
+              <button class="btn-volver-mapa" id="btn-volver-mapa" title="Volver al mapa general">
+                <span>←</span> Volver al mapa
+              </button>
+              <div class="titulo-con-badge">
+                <h2 id="est-comuna-nombre">Comuna</h2>
+                <span id="est-badge-total" class="badge-total-colegios">0 colegios</span>
               </div>
             </div>
-          </section>
+
+
+
+            <div class="buscador-wrapper">
+              <span class="icono-lupa">🔍</span>
+              <input type="text" id="buscador-colegios" placeholder="Buscar colegio o RBD..." autocomplete="off" />
+              <button id="btn-limpiar-busqueda" class="btn-limpiar" title="Limpiar búsqueda" style="display: none;">✕</button>
+            </div>
+
+            <div class="barra-info-lista">
+              <span id="contador-filtrados">Mostrando establecimientos</span>
+            </div>
+
+            <div id="lista-colegios" class="lista-colegios"></div>
+            <div id="sin-colegios-msg" class="sin-colegios-msg" style="display: none;">
+              No se encontraron colegios que coincidan con la búsqueda.
+            </div>
+          </div>
+
+          <!-- Vista 3: Redacción y Contacto con Sostenedor -->
+          <div id="vista-correo" class="vista-panel" style="display: none;">
+            <div class="panel-correo-header">
+              <button class="btn-volver-lista" id="btn-volver-lista" title="Volver al listado de colegios">
+                <span>←</span> Volver a la lista
+              </button>
+              <div class="titulo-con-badge">
+                <h2>Contactar Sostenedor</h2>
+                <span class="badge-correo-tag">Correo Directo</span>
+              </div>
+            </div>
+
+            <div class="correo-scroll-container">
+              <!-- Ficha resumen destinatario (sin RUT) -->
+              <div class="ficha-destinatario">
+                <div class="ficha-campo">
+                  <span class="ficha-label">Establecimiento</span>
+                  <span class="ficha-valor" id="correo-est-nombre">-</span>
+                </div>
+                <div class="ficha-campo">
+                  <span class="ficha-label">Sostenedor</span>
+                  <span class="ficha-valor" id="correo-sostenedor-nombre">-</span>
+                </div>
+                <div class="ficha-campo-email">
+                  <div class="email-info">
+                    <span class="ficha-label">Correo Sostenedor</span>
+                    <span class="email-texto" id="correo-sostenedor-email">-</span>
+                  </div>
+                  <button type="button" class="btn-copiar-mini" id="btn-copiar-email-solo" title="Copiar correo">
+                    Copiar
+                  </button>
+                </div>
+              </div>
+
+              <!-- Formulario de redacción -->
+              <div class="correo-formulario">
+                <div class="campo-grupo">
+                  <label for="correo-asunto" class="form-label">Asunto:</label>
+                  <input type="text" id="correo-asunto" class="form-input" placeholder="Asunto del correo..." />
+                </div>
+
+                <div class="campo-grupo">
+                  <label for="correo-cuerpo" class="form-label">Mensaje (editable):</label>
+                  <textarea id="correo-cuerpo" class="form-textarea" rows="7" placeholder="Escriba su mensaje..."></textarea>
+                </div>
+
+                <div class="correo-acciones">
+                  <button type="button" id="btn-abrir-cliente-correo" class="btn-correo-primario">
+                    <span>✉️</span> Abrir en tu correo
+                  </button>
+                  <button type="button" id="btn-copiar-todo-mensaje" class="btn-correo-secundario">
+                    <span>📋</span> Copiar mensaje completo
+                  </button>
+                </div>
+
+                <div id="notificacion-copiado" class="notificacion-copiado" style="display: none;">
+                  ✓ ¡Copiado al portapapeles!
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

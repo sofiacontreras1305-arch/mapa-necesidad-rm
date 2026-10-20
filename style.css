@@ -1224,7 +1224,7 @@ html, body {
   font-size: 10.5px;
   padding: 2px 7px;
   border-radius: 10px;
-  background: #f7f7f8;
+  background: #f4f4f5;
   color: #515050;
   border: 1px solid #ebebeb;
 }
@@ -1232,11 +1232,11 @@ html, body {
 .metrica-chip.chip-indice {
   border: none;
   font-weight: 700;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 3px rgba(10, 10, 10, 0.12);
 }
 
 .metrica-chip strong {
-  color: #cbcaca;
+  color: #fcfafa;
 }
 
 .chip-simce {

@@ -1225,7 +1225,7 @@ html, body {
   padding: 2px 7px;
   border-radius: 10px;
   background: #f7f7f8;
-  color: #555;
+  color: #515050;
   border: 1px solid #ebebeb;
 }
 
@@ -1236,7 +1236,7 @@ html, body {
 }
 
 .metrica-chip strong {
-  color: #222;
+  color: #cbcaca;
 }
 
 .chip-simce {
@@ -1304,7 +1304,7 @@ html, body {
 .badge-correo-tag {
   font-size: 11px;
   font-weight: 700;
-  color: #2b0b3f;
+  color: #3a2346;
   background: #f1ecf5;
   border: 1px solid #dcd1e6;
   padding: 3px 9px;
@@ -1360,7 +1360,7 @@ html, body {
 .ficha-valor {
   font-size: 12.5px;
   font-weight: 700;
-  color: #2b0b3f;
+  color: #583a67;
   line-height: 1.35;
 }
 

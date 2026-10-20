@@ -1104,34 +1104,25 @@ const totalSlides = 6; // 5 diapositivas de storytelling + 1 diapositiva con el 
 function siguienteSlide() {
   if (slideActual < totalSlides - 1) {
     slideActual++;
-    actualizarPosicionSlides();
   }
 }
 
 function anteriorSlide() {
   if (slideActual > 0) {
     slideActual--;
-    actualizarPosicionSlides();
   }
 }
 
 function irASlide(index) {
   if (index >= 0 && index < totalSlides) {
     slideActual = index;
-    actualizarPosicionSlides();
   }
 }
 
 function primerSlide() {
   slideActual = 0;
-  actualizarPosicionSlides();
 }
 
-function actualizarPosicionSlides() {
-  const container = document.getElementById("slidesContainer");
-  if (container) {
-    container.style.transform = `translateY(-${slideActual * 100}vh)`;
-  }
   // Actualizar indicadores visuales laterales (dots)
   const dots = document.querySelectorAll(".nav-dot");
   dots.forEach((dot, idx) => {
@@ -1139,7 +1130,7 @@ function actualizarPosicionSlides() {
       dot.classList.add("activo");
     } else {
       dot.classList.remove("activo");
-    }
+    };
   });
 
   // Actualizar enlaces de la barra de navegación superior
@@ -1151,7 +1142,6 @@ function actualizarPosicionSlides() {
       link.classList.remove("activo");
     }
   });
-}
 
 // Navegación con teclado
 window.addEventListener("keydown", (e) => {
@@ -1162,12 +1152,171 @@ window.addEventListener("keydown", (e) => {
   if (e.key === "ArrowDown" || e.key === "PageDown") {
     if (slideActual < totalSlides - 1) {
       slideActual++;
-      actualizarPosicionSlides();
-    }
+    };
   } else if (e.key === "ArrowUp" || e.key === "PageUp") {
     if (slideActual > 0) {
       slideActual--;
-      actualizarPosicionSlides();
-    }
+};
+  }});
+
+const slidesContainer = document.getElementById("slidesContainer");
+const slides = document.querySelectorAll(".slide");
+const pelotitas = document.querySelectorAll(".nav-dot");
+const botonesMenu = document.querySelectorAll(".navbar-links button, .nav-btn-link");
+
+const observador = new IntersectionObserver(
+  (entradas) => {
+    entradas.forEach((entrada) => {
+      if (entrada.isIntersecting) {
+        const indice = Array.from(slides).indexOf(entrada.target);
+
+        pelotitas.forEach((pelotita, i) => {
+          if (i === indice) {
+            pelotita.classList.add("activo");
+          } else {
+            pelotita.classList.remove("activo");
+          }
+        });
+
+        botonesMenu.forEach((boton, i) => {
+          if (i === indice) {
+            boton.classList.add("activo");
+          } else {
+            boton.classList.remove("activo");
+          }
+        });
+      }
+    });
+  },
+  {
+    root: slidesContainer,
+    threshold: 0.5,
   }
+);
+
+slides.forEach((slide) => observador.observe(slide));
+
+pelotitas.forEach((pelotita, index) => {
+  pelotita.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (slides[index]) {
+      slides[index].scrollIntoView({ behavior: "smooth" });
+    }
+  });
 });
+
+
+botonesMenu.forEach((boton, index) => {
+  boton.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (slides[index]) {
+      slides[index].scrollIntoView({ behavior: "smooth" });
+    }
+  });
+});
+
+
+const botonExplorar = document.querySelector(".btn-flecha-explorar");
+const contenedorMapa = document.getElementById("contenedor-mapa");
+
+if (botonExplorar && contenedorMapa) {
+  botonExplorar.addEventListener("click", (e) => {
+    e.preventDefault();
+    contenedorMapa.scrollIntoView({ behavior: "smooth" });
+  });
+}
+
+// 4. Buscador de comunas en el mapa
+const buscadorComunas = document.getElementById("buscador-comunas");
+const opcionesComunas = document.getElementById("opciones-comunas");
+
+if (buscadorComunas && opcionesComunas) {
+  const normalizarTexto = (texto) => {
+    return (texto || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .trim();
+  };
+
+  // Esperar a que los polígonos tengan su atributo data-nombre cargado
+  const esperarMapa = setInterval(() => {
+    const poligonos = document.querySelectorAll(".comuna-poligono[data-nombre]");
+
+    if (poligonos.length > 0) {
+      clearInterval(esperarMapa);
+      const comunasSet = new Set();
+
+      poligonos.forEach((p) => {
+        const nombre = p.getAttribute("data-nombre");
+        if (nombre) {
+          comunasSet.add(nombre.trim());
+        }
+      });
+
+      opcionesComunas.innerHTML = "";
+      Array.from(comunasSet)
+        .sort()
+        .forEach((comuna) => {
+          const option = document.createElement("option");
+          option.value = comuna;
+          opcionesComunas.appendChild(option);
+        });
+    }
+  }, 200);
+
+  const seleccionarComunaEnMapa = (valorInput) => {
+    const valorBuscado = normalizarTexto(valorInput);
+    const mapaSvg = document.getElementById("mapa-svg");
+    const poligonos = document.querySelectorAll(".comuna-poligono");
+
+    // Si se borra el texto del buscador, restaurar colores del mapa
+    if (!valorBuscado) {
+      if (mapaSvg) {
+        mapaSvg.classList.remove("mapa-filtrado");
+      }
+      poligonos.forEach((p) => p.classList.remove("comuna-destacada"));
+      return;
+    }
+
+    const poligonoEncontrado = Array.from(poligonos).find((p) => {
+      const nombreComuna = p.getAttribute("data-nombre") || "";
+      return normalizarTexto(nombreComuna) === valorBuscado;
+    });
+
+    if (poligonoEncontrado && mapaSvg) {
+      // 1. Disparar el clic nativo de tu código para mostrar los datos en el panel
+      poligonoEncontrado.dispatchEvent(
+        new MouseEvent("click", { bubbles: true })
+      );
+
+      // 2. Atenuar el resto del mapa y resaltar la comuna encontrada
+      setTimeout(() => {
+        poligonos.forEach((p) => p.classList.remove("comuna-destacada"));
+        mapaSvg.classList.add("mapa-filtrado");
+        poligonoEncontrado.classList.add("comuna-destacada");
+      }, 10);
+    }
+  };
+
+  buscadorComunas.addEventListener("input", (e) => {
+    seleccionarComunaEnMapa(e.target.value);
+  });
+
+  buscadorComunas.addEventListener("change", (e) => {
+    seleccionarComunaEnMapa(e.target.value);
+  });
+}
+
+// 5. Quitar el filtro gris cuando el usuario hace clic manualmente en el mapa
+const mapaElemento = document.getElementById("mapa-svg");
+if (mapaElemento) {
+  mapaElemento.addEventListener("click", (e) => {
+    if (e.isTrusted) {
+      mapaElemento.classList.remove("mapa-filtrado");
+      document.querySelectorAll(".comuna-destacada").forEach((p) => {
+        p.classList.remove("comuna-destacada");
+      });
+    }
+  });
+}

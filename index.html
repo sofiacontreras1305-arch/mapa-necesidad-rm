@@ -57,7 +57,7 @@
       <div class="slide-content-amplio">
         <span class="story-tag">DIAGNÓSTICO REGIONAL RM</span>
         <h1>La desigualdad educacional invisible en la Región Metropolitana</h1>
-        <p class="slide-descripcion">El territorio metropolitano no es homogéneo. Al analizar las comunas de Santiago, las brechas socioeconómicas y educativas marcan profundas diferencias territoriales que impactan directamente en las oportunidades de aprendizaje de los estudiantes.</p>
+        <p class="slide-descripcion">El territorio metropolitano no es homogéneo, las brechas socioeconómicas y educativas marcan profundas diferencias territoriales que impactan directamente en las oportunidades de aprendizaje de los estudiantes.</p>
 
         <!-- Tarjetas de impacto cuantitativo -->
         <div class="metricas-grid">
@@ -84,7 +84,7 @@
     <section class="slide slide-story">
       <div class="slide-content-amplio">
         <span class="story-tag tag-metodologia">METODOLOGÍA DE PRIORIZACIÓN</span>
-        <h2>Índice de Necesidad Escolar (Escala 1 al 100)</h2>
+        <h2>Índice de Necesidad Escolar</h2>
         <p class="slide-descripcion">Para identificar y priorizar los establecimientos educativos que requieren un mayor apoyo económico y pedagógico, se construyó un <strong>Índice de Necesidad Escolar</strong> con una escala del 1 al 100. Este indicador combina de manera equitativa tres factores fundamentales en la realidad educativa:</p>
 
         <!-- 3 Pilares metodológicos equitativos -->
@@ -105,7 +105,7 @@
           <div class="metodologia-card">
             
             
-            <h3>3. Ratio Alumnos por Docente</h3>
+            <h3>3. Proporción de Alumnos por Docente</h3>
             <p>Refleja la exigencia sobre el equipo de profesores y el nivel de hacinamiento en las aulas escolares.</p>
           </div>
         </div>
@@ -157,7 +157,7 @@
       <div class="slide-content-amplio">
         <span class="story-tag tag-pedagogico">BARRERAS AL APRENDIZAJE</span>
         <h2>Asimetría en el apoyo pedagógico y hacinamiento escolar</h2>
-        <p class="slide-descripcion">Sumado a eso, existe una profunda asimetría en la distribución del apoyo pedagógico complementario, lo que dificulta el aprendizaje personalizado de los estudiantes y genera brechas insalvables a temprana edad.</p>
+        <p class="slide-descripcion">Sumado a eso, existe una profunda asimetría en la distribución del apoyo pedagógico complementario, lo que dificulta el aprendizaje personalizado de los estudiantes y genera brechas a temprana edad.</p>
 
         <!-- Comparador visual de hacinamiento: 13 vs 25+ alumnos -->
         <div class="hacinamiento-comparador">
@@ -167,8 +167,6 @@
               <span class="hacinamiento-tag tag-critico">AULAS VULNERABLES</span>
               <h3>Más de 25 alumnos por docente</h3>
             </div>
-            <p class="hacinamiento-desc">Sin embargo, la realidad en las aulas vulnerables es muy distinta: <strong>el hacinamiento crítico, con más de 25 alumnos por docente</strong>, predomina en establecimientos con alta vulnerabilidad.</p>
-            
             <!-- Pictograma 25 estudiantes (13 + 12) saturado en rojo -->
             <div class="pictograma-bloque">
               <div class="pictograma-fila-est">
@@ -208,7 +206,6 @@
               <span class="hacinamiento-tag tag-promedio">PROMEDIO REGIONAL</span>
               <h3>13 estudiantes por docente</h3>
             </div>
-            <p class="hacinamiento-desc">El hacinamiento escolar promedio en la Región Metropolitana es de <strong>13 estudiantes por docente contratado</strong>.</p>
             
             <!-- Pictograma 13 estudiantes (7 + 6) -->
             <div class="pictograma-bloque">
@@ -252,15 +249,11 @@
 
           <div class="fundacion-card">
             
-            <h3>Vinculación sin Fricción</h3>
+            <h3>Vinculación agilizada</h3>
             <p>Accede directamente a los datos de contacto y correos institucionales de los sostenedores para coordinar convenios de apoyo pedagógico y socioemocional.</p>
           </div>
 
-          <div class="fundacion-card">
-            
-            <h3>Contacto Ágil y Personalizado</h3>
-            <p>Genera en segundos propuestas de vinculación y cartas de presentación con plantillas adaptadas a la realidad de cada establecimiento.</p>
-          </div>
+          
         </div>
 
         <!-- Banner de llamado a la acción -->
@@ -282,48 +275,85 @@
       </div>
 
       <div class="contenedor-principal-mapa">
-        <div style="margin-bottom: 20px; max-width: 300px; position: relative;">
-        <input type="text" id="buscador-comunas" list="opciones-comunas" placeholder="Buscar comuna..." style="width: 100%; padding: 9px 34px; background-color: #FCFBFB; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 14px; outline: none;">
-        <datalist id="opciones-comunas"></datalist>
-        </div>
-        
         <div id="contenedor-mapa">
+          <!-- Buscador flotante de comuna en el mapa -->
+          <div class="buscador-comuna-mapa">
+            <span class="icono-lupa-mapa">🔍</span>
+            <input type="text" id="buscador-comunas" list="opciones-comunas" placeholder="Buscar comuna..." autocomplete="off">
+            <datalist id="opciones-comunas"></datalist>
+          </div>
+
           <div id="tooltip" class="tooltip-flotante"></div>
           <svg id="mapa-svg" viewBox="0 0 800 563" preserveAspectRatio="xMidYMid meet"></svg>
         </div>
 
         <div class="panel-info">
-          <!-- Vista 1: Resumen Comunal y Leyenda -->
+          <!-- Vista 1: Resumen Comunal -->
           <div id="vista-comuna" class="vista-panel activa">
             <section id="tarjeta-datos" class="tarjeta-datos">
               <h2 id="comuna-nombre">Hacer clic sobre una comuna</h2>
               <div id="comuna-detalles">
-                <p><strong>Índice de Necesidad:</strong> <span id="val-indice">-</span> / 100</p>
-                <p><strong>Colegios analizados:</strong> <span id="val-colegios">-</span></p>
-                <p><strong>% Colegios SEP Críticos:</strong> <span id="val-criticos">-</span></p>
-                <p><strong>SIMCE:</strong> <span id="val-simce" title="Promedio nacional referencial: 256,7 (máx 500 pts.)" style="cursor: help; border-bottom: 1px dotted #888;">-</span> pts</p>
-                <p><strong>Alumnos Prioritarios:</strong> <span id="val-prioritarios">-</span></p>
-                <button class="btn-accion" id="btn-ver-establecimientos">Ver establecimientos</button>
-              </div>
-            </section>
-            <section class="leyenda">
-              <h3>Índice de Necesidad</h3>
-              <div class="barra-leyenda-container">
-                <div class="barra-colores">
-                  <div class="segmento c-muy-baja" title="Muy baja (< 35)"></div>
-                  <div class="segmento c-baja" title="Baja (35 - 46)"></div>
-                  <div class="segmento c-media" title="Media (46 - 52)"></div>
-                  <div class="segmento c-alta" title="Alta (52 - 58)"></div>
-                  <div class="segmento c-muy-alta" title="Muy alta (> 58)"></div>
+                <div class="fila-metrica">
+                  <div class="metrica-info-wrapper">
+                    <span class="metrica-label">Índice de Necesidad</span>
+                    <span class="info-badge" tabindex="0" aria-label="Información sobre Índice de Necesidad">ⓘ</span>
+                    <div class="popover-recordatorio">
+                      <strong class="popover-titulo">¿Qué es el Índice de Necesidad?</strong>
+                      <span class="popover-texto">Indicador sintético (0 a 100) que calcula la urgencia de apoyo escolar priorizando alta vulnerabilidad (IVE), bajo rendimiento (SIMCE) y sobrecarga docente (alumnos por profesor). A mayor puntaje, mayor necesidad.</span>
+                    </div>
+                  </div>
+                  <span class="metrica-valor"><span id="val-indice">-</span> <span class="metrica-sub">/ 100</span></span>
                 </div>
-                <div class="numeros-leyenda">
-                  <span>&lt;35</span>
-                  <span>35</span>
-                  <span>46</span>
-                  <span>52</span>
-                  <span>58</span>
-                  <span>&gt;58</span>
+
+                <div class="fila-metrica">
+                  <div class="metrica-info-wrapper">
+                    <span class="metrica-label">Colegios analizados</span>
+                    <span class="info-badge" tabindex="0" aria-label="Información sobre Colegios analizados">ⓘ</span>
+                    <div class="popover-recordatorio">
+                      <strong class="popover-titulo">Colegios analizados</strong>
+                      <span class="popover-texto">Establecimientos subvencionados y municipales evaluados con datos oficiales vigentes respecto al total comunal registrado.</span>
+                    </div>
+                  </div>
+                  <span class="metrica-valor" id="val-colegios">-</span>
                 </div>
+
+                <div class="fila-metrica">
+                  <div class="metrica-info-wrapper">
+                    <span class="metrica-label">% Colegios SEP Críticos</span>
+                    <span class="info-badge" tabindex="0" aria-label="Información sobre Colegios SEP Críticos">ⓘ</span>
+                    <div class="popover-recordatorio popover-arriba">
+                      <strong class="popover-titulo">¿Qué es % Colegios SEP Críticos?</strong>
+                      <span class="popover-texto">Porcentaje de colegios Ley SEP calificados en categoría de desempeño Insuficiente o Medio-Bajo por la Agencia de Calidad de la Educación.</span>
+                    </div>
+                  </div>
+                  <span class="metrica-valor"><span id="val-criticos">-</span></span>
+                </div>
+
+                <div class="fila-metrica">
+                  <div class="metrica-info-wrapper">
+                    <span class="metrica-label">Promedio SIMCE</span>
+                    <span class="info-badge" tabindex="0" aria-label="Información sobre SIMCE">ⓘ</span>
+                    <div class="popover-recordatorio popover-arriba">
+                      <strong class="popover-titulo">¿Qué mide el SIMCE?</strong>
+                      <span class="popover-texto">Promedio comunal en pruebas estandarizadas (Lectura y Matemática). La referencia nacional histórica es ~256 pts. Puntajes menores reflejan mayor rezago.</span>
+                    </div>
+                  </div>
+                  <span class="metrica-valor"><span id="val-simce">-</span> <span class="metrica-sub">pts</span></span>
+                </div>
+
+                <div class="fila-metrica">
+                  <div class="metrica-info-wrapper">
+                    <span class="metrica-label">Alumnos Prioritarios</span>
+                    <span class="info-badge" tabindex="0" aria-label="Información sobre Alumnos Prioritarios">ⓘ</span>
+                    <div class="popover-recordatorio popover-arriba">
+                      <strong class="popover-titulo">¿Quiénes son Alumnos Prioritarios?</strong>
+                      <span class="popover-texto">Estudiantes cuya situación socioeconómica en el hogar dificulta sus oportunidades de aprendizaje y permanencia según el MINEDUC.</span>
+                    </div>
+                  </div>
+                  <span class="metrica-valor" id="val-prioritarios">-</span>
+                </div>
+
+                <button class="btn-accion" id="btn-ver-establecimientos" style="display: none;">Ver establecimientos</button>
               </div>
             </section>
           </div>
@@ -339,8 +369,6 @@
                 <span id="est-badge-total" class="badge-total-colegios">0 colegios</span>
               </div>
             </div>
-
-
 
             <div class="buscador-wrapper">
               <span class="icono-lupa">🔍</span>
@@ -419,6 +447,28 @@
               </div>
             </div>
           </div>
+
+          <!-- Leyenda de Índice de Necesidad (Permanece visible en vista de comuna y de establecimientos) -->
+          <section class="leyenda" id="leyenda-compartida">
+            <h3>Índice de Necesidad</h3>
+            <div class="barra-leyenda-container">
+              <div class="barra-colores">
+                <div class="segmento c-muy-baja" title="Muy baja (< 35)"></div>
+                <div class="segmento c-baja" title="Baja (35 - 46)"></div>
+                <div class="segmento c-media" title="Media (46 - 52)"></div>
+                <div class="segmento c-alta" title="Alta (52 - 58)"></div>
+                <div class="segmento c-muy-alta" title="Muy alta (> 58)"></div>
+              </div>
+              <div class="numeros-leyenda">
+                <span>&lt;35</span>
+                <span>35</span>
+                <span>46</span>
+                <span>52</span>
+                <span>58</span>
+                <span>&gt;58</span>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
 

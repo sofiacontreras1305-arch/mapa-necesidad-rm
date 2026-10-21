@@ -301,6 +301,12 @@ function mostrarDatosComuna(nombre) {
   }
   if (panel) panel.style.display = "block";
 
+  // Mostrar el botón de ver establecimientos una vez seleccionada una comuna
+  const btnVerEst = document.getElementById("btn-ver-establecimientos");
+  if (btnVerEst) {
+    btnVerEst.style.display = "block";
+  }
+
   // Si estamos en modo zoom al cambiar de comuna, resetear la vista
   if (enModoZoom) {
     resetearZoom();
@@ -378,9 +384,11 @@ function resetearZoom() {
   const vistaComuna = document.getElementById("vista-comuna");
   const vistaEst = document.getElementById("vista-establecimientos");
   const vistaCorreo = document.getElementById("vista-correo");
+  const leyendaCompartida = document.getElementById("leyenda-compartida");
 
   if (vistaEst) vistaEst.classList.remove("activa");
   if (vistaCorreo) vistaCorreo.classList.remove("activa");
+  if (leyendaCompartida) leyendaCompartida.style.display = "block";
 
   setTimeout(() => {
     if (vistaEst) vistaEst.style.display = "none";
@@ -514,10 +522,10 @@ function mostrarPanelEstablecimientos(nombreComuna) {
           <span class="item-rbd">RBD: ${colegio.RBD || "-"}</span>
         </div>
         <div class="item-metricas">
-          <span class="metrica-chip chip-indice" style="background:${colorColegio}; color:#ffffff;" title="Índice de Necesidad Escolar (escala 1 al 100)">Índice: <strong>${indColegio !== null && !isNaN(indColegio) ? indColegio : '-'}</strong> (${catTexto})</span>
-          <span class="metrica-chip chip-simce" title="Promedio SIMCE 4° Básico">SIMCE: <strong>${simce}</strong></span>
-          <span class="metrica-chip chip-ive" title="Índice de Vulnerabilidad Escolar">IVE: <strong>${ive}</strong></span>
-          <span class="metrica-chip chip-docente" title="Alumnos por docente">Alum/Doc: <strong>${alumDoc}</strong></span>
+          <span class="metrica-chip chip-indice" style="background:${colorColegio}; color:#ffffff;" title="Índice de Necesidad: Escala 0 a 100 ponderada por IVE, SIMCE inverso y alumnos por docente (${catTexto}).">Índice: <strong>${indColegio !== null && !isNaN(indColegio) ? indColegio : '-'}</strong> (${catTexto})</span>
+          <span class="metrica-chip chip-simce" title="Promedio SIMCE: Puntaje en evaluaciones estandarizadas (ref. nacional histórica ~256 pts).">SIMCE: <strong>${simce}</strong></span>
+          <span class="metrica-chip chip-ive" title="IVE (Índice de Vulnerabilidad Escolar JUNAEB): Proporción de estudiantes en situación de riesgo socioeducativo.">IVE: <strong>${ive}</strong></span>
+          <span class="metrica-chip chip-docente" title="Alumnos por docente: Estudiantes por cada profesor contratado (sobrecarga pedagógica).">Alum/Doc: <strong>${alumDoc}</strong></span>
         </div>
         <div class="item-colegio-footer">
           <span class="badge-contactar-item">✉️ Redactar correo →</span>
@@ -549,6 +557,12 @@ function mostrarPanelEstablecimientos(nombreComuna) {
     });
   }
 
+  // Asegurar que la leyenda compartida esté visible al ver los establecimientos
+  const leyendaCompartida = document.getElementById("leyenda-compartida");
+  if (leyendaCompartida) {
+    leyendaCompartida.style.display = "block";
+  }
+
   // Transición suave entre paneles (asegurar que vista-correo también quede oculta)
   const vistaCorreo = document.getElementById("vista-correo");
   if (vistaCorreo) {
@@ -570,6 +584,11 @@ function mostrarPanelEstablecimientos(nombreComuna) {
 function mostrarPanelCorreo(colegio, idx) {
   const vistaEst = document.getElementById("vista-establecimientos");
   const vistaCorreo = document.getElementById("vista-correo");
+  const leyendaCompartida = document.getElementById("leyenda-compartida");
+
+  if (leyendaCompartida) {
+    leyendaCompartida.style.display = "none";
+  }
 
   const estNombreEl = document.getElementById("correo-est-nombre");
   const sostNombreEl = document.getElementById("correo-sostenedor-nombre");
@@ -744,6 +763,8 @@ function inicializarVistaCorreo() {
     btnVolverLista.addEventListener("click", () => {
       const vistaEst = document.getElementById("vista-establecimientos");
       const vistaCorreo = document.getElementById("vista-correo");
+      const leyendaCompartida = document.getElementById("leyenda-compartida");
+      if (leyendaCompartida) leyendaCompartida.style.display = "block";
       if (vistaEst && vistaCorreo) {
         vistaCorreo.classList.remove("activa");
         setTimeout(() => {
